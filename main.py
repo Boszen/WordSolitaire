@@ -17,16 +17,20 @@ class GameMain:
     def __init__(self):
         self.max_frame_rate = 60
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.scroll_bg = False
+
+        self.bg_image = pygame.transform.scale(
+            pygame.image.load("./graphics/background.png"), (WIDTH+5, HEIGHT+5))
 
         self.g_state_manager = StateMachine(self.screen)
         states = {
             'start': StartState(self.g_state_manager),
-            'difselect': DifficultySelectionState(self.g_state_manager),
+            'dif_select': DifficultySelectionState(self.g_state_manager),
             'draw': DrawState(self.g_state_manager),
             'play': PlayState(self.g_state_manager),
             'between': BetweenRoundState(self.g_state_manager),
-            'high-scores': HighScoreState(self.g_state_manager),
-            'game-over': GameOverState(self.g_state_manager),
+            'high_score': HighScoreState(self.g_state_manager),
+            'game_over': GameOverState(self.g_state_manager),
         }
         self.g_state_manager.SetStates(states)
 
@@ -76,11 +80,9 @@ class GameMain:
             main.screen.blit(self.bg_image, (0, 0))
 
     def PlayGame(self):
-        self.bg_music.play(-1)
+        #self.bg_music.play(-1)
         clock = pygame.time.Clock()
-        self.g_state_manager.Change('start', {
-            'high_scores': self.LoadHighScores(),
-        })
+        self.g_state_manager.Change('start',{})
 
         scroll = 0
 
