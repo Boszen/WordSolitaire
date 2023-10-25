@@ -1,6 +1,5 @@
 import os.path
 
-
 import pygame, math
 from pygame import mixer
 from src.constants import *
