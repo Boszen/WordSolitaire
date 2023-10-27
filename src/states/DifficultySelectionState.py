@@ -12,7 +12,7 @@ class DifficultySelectionState(BaseState):
 
     def Enter(self, params):
         self.difficulty = "Easy"  # Reset the difficulty when entering the state
-
+#assd
 
     def update(self, dt, events):
         for event in events:
