@@ -1,4 +1,5 @@
 from src.states.BaseState import BaseState
+import pygame, sys
 
 class StateMachine:
     def __init__(self, screen):

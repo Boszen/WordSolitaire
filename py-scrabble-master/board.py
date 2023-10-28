@@ -16,10 +16,10 @@ class ScrabbleBoard:
         whereas bonuses have surfaces as items.
         '''
         self.pos = pos
-        self.tiles = [[None for _ in range(15)] for __ in range(15)]
+        self.tiles = [[None for _ in range(7)] for __ in range(7)]
         self.rman = rman
-        self.size = (15 * resman.Tile_Size[0],
-                     15 * resman.Tile_Size[1])
+        self.size = (7 * resman.Tile_Size[0],
+                     7 * resman.Tile_Size[1])
         self.rect = pygame.Rect(self.pos, self.size)
         self.clean = True
 

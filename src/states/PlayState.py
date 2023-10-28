@@ -1,5 +1,6 @@
 from src.states.BaseState import BaseState
 import pygame
+import pygame, sys
 
 class PlayState(BaseState):
     def __init__(self, state_manager):
@@ -15,4 +16,8 @@ class PlayState(BaseState):
         pass
 
     def update(self, dt, events):
-        pass
+         for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                
