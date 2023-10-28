@@ -14,7 +14,7 @@ class StartState(BaseState):
         pass
 
     def Enter(self, params):
-        pass
+        self.high_scores = params['high_scores']
 
     def render(self, screen):
         # title
@@ -54,11 +54,13 @@ class StartState(BaseState):
                         self.option=2
                     else:
                         self.option=1
-                    self.menu_change_sound.play()
+                    #self.menu_change_sound.play()
                 if event.key == pygame.K_RETURN:
-                    self.confirm_sound.play()
+                    #self.confirm_sound.play()
 
                     if self.option == 1:
                         self.state_machine.Change('draw')
                     else:
-                        self.state_machine.Change('high_score')
+                        self.state_machine.Change('high_score', {
+                            'high_scores': self.high_scores
+                        })

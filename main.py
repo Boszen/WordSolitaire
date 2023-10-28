@@ -33,38 +33,58 @@ class GameMain:
             'game_over': GameOverState(self.g_state_manager),
         }
         self.g_state_manager.SetStates(states)
-
-
-    '''def LoadHighScores(self):
-        if not os.path.exists(RANK_FILE_NAME):
-            with open(RANK_FILE_NAME, "w") as fp:
-                for i in range(10, 0, -1):
-                    scores = "AAA\n" + str(i*10) + "\n"
+    
+    def LoadHighScores(self):
+        if not os.path.exists(RANK_EASY):
+            with open(RANK_EASY, "w") as fp:
+                for i in range(0, 10):
+                    scores ="AAA\n" + str((10-i)*10) + "\n"
                     fp.write(scores)
                 fp.close()
 
-        file = open(RANK_FILE_NAME, "r+")
-        all_lines = file.readlines()
+        if not os.path.exists(RANK_MEDIUM):
+            with open(RANK_MEDIUM, "w") as fp:
+                for i in range(0, 10):
+                    scores ="BBB\n" + str((10-i)*10) + "\n"
+                    fp.write(scores)
+                fp.close()
+
+        if not os.path.exists(RANK_HARD):
+            with open(RANK_HARD, "w") as fp:
+                for i in range(0, 10):
+                    scores ="CCC\n" + str((10-i)*10) + "\n"
+                    fp.write(scores)
+                fp.close()
+
+        rank_files = [RANK_EASY,RANK_MEDIUM,RANK_HARD]
+
         scores = []
 
-        name_flip = True
-        counter =0
-        for i in range(10):
-            scores.append({
-                'name':'',
-                'score':0
-            })
+        for file_name in rank_files:
 
-        for line in all_lines:
-            if name_flip:
-                scores[counter]['name'] = line[:-1]
-            else:
-                scores[counter]['score'] = int(line[:-1])
-                counter+=1
+            file = open(file_name, "r+")
+            all_lines = file.readlines()
+            score = []
 
-            name_flip = not name_flip
+            list_header = 0
+            counter =0
+            for i in range(10):
+                score.append({
+                    'name':'',
+                    'score':0
+                })
 
-        return scores'''
+            for line in all_lines:
+                if list_header == 0:
+                    score[counter]['name'] = line[:-1]
+                    list_header += 1
+                else:
+                    score[counter]['score'] = int(line[:-1])
+                    counter+=1
+                    list_header = 0
+            scores.append(score)
+
+        return scores
 
     def RenderBackground(self):
         if self.scroll_bg:
@@ -82,7 +102,9 @@ class GameMain:
     def PlayGame(self):
         #self.bg_music.play(-1)
         clock = pygame.time.Clock()
-        self.g_state_manager.Change('start',{})
+        self.g_state_manager.Change('start',{
+            'high_scores': self.LoadHighScores(),
+        })
 
         scroll = 0
 
