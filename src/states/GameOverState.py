@@ -1,15 +1,14 @@
 from src.states.BaseState import BaseState
 import pygame, sys
-from constants import *
-from DifficultySelectionState import *
+from src.constants import *
 
 class GameOverState(BaseState):
     def __init__(self, state_manager):
         super(GameOverState, self).__init__(state_manager)
         #self.new_record_Sound = pygame.mixer.Sound('')#
-        self.small_font = pygame.font.Font('', 32)
-        self.medium_font = pygame.font.Font('', 64)
-        self.large_font = pygame.font.Font('', 96)
+        self.small_font = pygame.font.Font('./fonts/font.ttf', 32)
+        self.medium_font = pygame.font.Font('./fonts/font.ttf', 64)
+        self.large_font = pygame.font.Font('./fonts/font.ttf', 96)
 
     def Exit(self):
         pass

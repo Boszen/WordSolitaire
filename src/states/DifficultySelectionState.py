@@ -1,61 +1,78 @@
 from src.states.BaseState import BaseState
-import pygame
+from src.constants import *
+import pygame,sys
 
 
 class DifficultySelectionState(BaseState):
     def __init__(self, state_manager):
         super(DifficultySelectionState, self).__init__(state_manager)
-        self.difficulty = "Easy" #Default difficulty
+
+        self.difficulty = 1 #Default difficulty
+
+        self.medium_font = pygame.font.Font('./fonts/font.ttf', 48)
+        self.large_font = pygame.font.Font('./fonts/font.ttf', 96)
 
     def Exit(self):
         pass
 
     def Enter(self, params):
-        self.difficulty = "Easy"  # Reset the difficulty when entering the state
-#assd
+        self.high_scores = params['high_scores']
 
     def update(self, dt, events):
         for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     # Move the selection up
-                    if self.difficulty == "Medium":
-                        self.difficulty = "Easy"
-                    elif self.difficulty == "Hard":
-                        self.difficulty = "Medium"
+                    if self.difficulty == 1:
+                        self.difficulty = 3 
+                    else:
+                        self.difficulty -=1
                 elif event.key == pygame.K_DOWN:
                     # Move the selection down
-                    if self.difficulty == "Easy":
-                        self.difficulty = "Medium"
-                    elif self.difficulty == "Medium":
-                        self.difficulty = "Hard"
+                    if self.difficulty == 3:
+                        self.difficulty = 1 
+                    else:
+                        self.difficulty +=1
                 elif event.key == pygame.K_RETURN:
                     # Start the game with the selected difficulty
-                    if self.difficulty == "Easy":
-                        self.state_manager.change_state("Game", difficulty="Easy")
-                    elif self.difficulty == "Medium":
-                        self.state_manager.change_state("Game", difficulty="Medium")
-                    elif self.difficulty == "Hard":
-                        self.state_manager.change_state("Game", difficulty="Hard")
+                    if self.difficulty == 1:
+                        self.state_machine.Change("draw", {
+                            'high_scores': self.high_scores,
+                            'difficulty': self.difficulty
+                        })
+                    elif self.difficulty == 2:
+                        self.state_machine.Change("draw", {
+                            'high_scores': self.high_scores,
+                            'difficulty': self.difficulty
+                        })
+                    elif self.difficulty == 3:
+                        self.state_machine.Change("draw", {
+                            'high_scores': self.high_scores,
+                            'difficulty': self.difficulty
+                        })
 
     def render(self, screen):
-        # Clear the screen
-        screen.fill((0, 0, 0))
-        
+        active_color = (103,255,255)
+        inactive_color = (255,255,255)
+
         # Render text and buttons for difficulty selection
-        font = pygame.font.Font(None, 36)
-        easy_text = font.render("Easy", True, (255, 255, 255))
-        medium_text = font.render("Medium", True, (255, 255, 255))
-        hard_text = font.render("Hard", True, (255, 255, 255))
+        t_easy = self.medium_font.render("Easy", False, inactive_color)
+        rect_easy = t_easy.get_rect(center=(WIDTH / 2, 250))
+        t_medium = self.medium_font.render("Medium", False, inactive_color)
+        rect_medium = t_medium.get_rect(center=(WIDTH / 2, 350))
+        t_hard = self.medium_font.render("Hard", False, inactive_color)
+        rect_hard = t_hard.get_rect(center=(WIDTH / 2, 450))
 
-        screen.blit(easy_text, (200, 100))
-        screen.blit(medium_text, (200, 200))
-        screen.blit(hard_text, (200, 300))
+        if self.difficulty == 1:
+            t_easy = self.medium_font.render("Easy", False, active_color)
+        elif self.difficulty == 2:
+            t_medium = self.medium_font.render("Medium", False, active_color)
+        elif self.difficulty == 3:
+            t_hard = self.medium_font.render("Hard", False, active_color)
 
-         # Highlight the selected difficulty
-        if self.difficulty == "Easy":
-            pygame.draw.rect(screen, (255, 0, 0), (180, 100, 20, 40), 2)
-        elif self.difficulty == "Medium":
-            pygame.draw.rect(screen, (255, 0, 0), (180, 200, 20, 40), 2)
-        elif self.difficulty == "Hard":
-            pygame.draw.rect(screen, (255, 0, 0), (180, 300, 20, 40), 2)
+        screen.blit(t_easy, rect_easy)
+        screen.blit(t_medium, rect_medium)
+        screen.blit(t_hard, rect_hard)

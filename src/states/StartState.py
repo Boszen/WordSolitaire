@@ -59,7 +59,9 @@ class StartState(BaseState):
                     #self.confirm_sound.play()
 
                     if self.option == 1:
-                        self.state_machine.Change('draw')
+                        self.state_machine.Change('dif_select', {
+                            'high_scores': self.high_scores
+                        })
                     else:
                         self.state_machine.Change('high_score', {
                             'high_scores': self.high_scores
