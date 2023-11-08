@@ -2,14 +2,27 @@ import pygame
 from src.Util import SpriteManager, Animation
 import src.Util as Util
 from src.StateMachine import StateMachine
+import glob, os
 
 sprite_collection = SpriteManager().spriteCollection
 
 
 
 card_image_list = {
-    "1": pygame.image.load("./graphics/playingCards/card-back1.png"),
-    "2": pygame.image.load("./graphics/playingCards/card-back2.png")
+
+}
+
+folder_path = "./graphics/playingCards"
+image_pattern = os.path.join(folder_path, "*.png") 
+image_files = glob.glob(image_pattern)
+
+key=0
+for value in image_files:
+    card_image_list[key] =  pygame.image.load(value)
+    key +=1
+
+alphabet_image_list = {
+    'a': sprite_collection["a"].image
 }
 
 

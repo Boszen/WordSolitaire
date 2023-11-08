@@ -1,4 +1,6 @@
 import pygame
+from src.constants import *
+
 class Card:
     def __init__(self, type, image):
         self.type = type
@@ -6,8 +8,8 @@ class Card:
 
         self.dragging = False
 
-        self.x = 0
-        self.y = 0
+        self.x = WIDTH / 2 + 100
+        self.y = HEIGHT /2 +100
         self.width ,self.height = image.get_size()
 
     def mouseCollide(self, target):

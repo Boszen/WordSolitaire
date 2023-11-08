@@ -1,0 +1,16 @@
+{
+    "spriteSheetURL": "./graphics/alphabetTileSSH/Tiles/Flat/Wood02/Flat-Wood_02a-Black-64x64.png",
+    "type":"none",
+    "size":[64,64],
+    "sprites":[
+        {
+            "name":"a",
+            "x":0,
+            "y":0,
+            "scalefactor":1,
+            "colorKey":-1
+	   }
+]
+}
+
+

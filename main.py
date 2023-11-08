@@ -63,6 +63,7 @@ class GameMain:
         for file_name in rank_files:
 
             file = open(file_name, "r+")
+            
             all_lines = file.readlines()
             score = []
 
@@ -97,6 +98,7 @@ class GameMain:
             if abs(self.scroll) > self.bg_image.get_width():
                 self.scroll = 0
         else:
+            
             main.screen.blit(self.bg_image, (0, 0))
 
     def PlayGame(self):
