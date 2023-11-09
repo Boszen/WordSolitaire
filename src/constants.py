@@ -2,7 +2,7 @@ WIDTH = 1280
 HEIGHT = 720
 
 BOARD_SIZE = 7
-CELL_SIZE = 66
+CELL_SIZE = 64
 
 #Board + gap SIZE = 60*7 + 20*6 = 420 + 120 = 640 -> 640*640
 

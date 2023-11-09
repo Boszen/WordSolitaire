@@ -22,7 +22,32 @@ for value in image_files:
     key +=1
 
 alphabet_image_list = {
-    'a': sprite_collection["a"].image
+    'a': sprite_collection["a"].image,
+    'b': sprite_collection["b"].image,
+    'c': sprite_collection["c"].image,
+    'd': sprite_collection["d"].image,
+    'e': sprite_collection["e"].image,
+    'f': sprite_collection["f"].image,
+    'g': sprite_collection["g"].image,
+    'h': sprite_collection["h"].image,
+    'i': sprite_collection["i"].image,
+    'j': sprite_collection["j"].image,
+    'k': sprite_collection["k"].image,
+    'l': sprite_collection["l"].image,
+    'm': sprite_collection["m"].image,
+    'n': sprite_collection["n"].image,
+    'o': sprite_collection["o"].image,
+    'p': sprite_collection["p"].image,
+    'q': sprite_collection["q"].image,
+    'r': sprite_collection["r"].image,
+    's': sprite_collection["s"].image,
+    't': sprite_collection["t"].image,
+    'u': sprite_collection["u"].image,
+    'v': sprite_collection["v"].image,
+    'w': sprite_collection["w"].image,
+    'x': sprite_collection["x"].image,
+    'y': sprite_collection["y"].image,
+    'z': sprite_collection["z"].image
 }
 
 

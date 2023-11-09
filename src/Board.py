@@ -17,10 +17,10 @@ class Board:
 
     def Generate_Cell(self):
         cell_matrix = []
-        for i in range(1,8):
-            y_temp = (i-1) * (CELL_SIZE + self.gap) + self.y
-            for j in range(1,8):
-                x_temp = (j-1) * (CELL_SIZE + self.gap) + self.x
+        for i in range(0,7):
+            y_temp = (i) * (CELL_SIZE + self.gap) + self.y
+            for j in range(0,7):
+                x_temp = (j) * (CELL_SIZE + self.gap) + self.x
                 cell = Cell((i,j), x_temp, y_temp)
                 cell_matrix.append(cell)
         self.cell = cell_matrix

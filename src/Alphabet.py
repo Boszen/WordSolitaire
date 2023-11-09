@@ -8,7 +8,7 @@ class Alphabet:
 
         self.dragging = False
 
-        self.x = WIDTH / 2 
+        self.x = WIDTH / 2 + 300
         self.y = HEIGHT /2 
         self.width ,self.height = image.get_size()
 
@@ -17,6 +17,10 @@ class Alphabet:
             return True
         else:
             return False
+    
+    def collide(self, target):
+        return not(self.x + self.width < target.x or self.x > target.x + target.width or
+                   self.y + self.height < target.y or self.y > target.y + target.height)
         
     def centerPoint(self):
         center_x = self.x + self.width/2
