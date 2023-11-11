@@ -11,7 +11,6 @@ class Board:
         self.cell = None
         self.gap = 20
         self.Generate_Cell()
-
         
         #self.width ,self.height = image.get_size()
 

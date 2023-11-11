@@ -51,7 +51,7 @@ class DiscardState(BaseState):
                 if event.button == 1:  # Left mouse button
                     for card in self.game.card_active:
                         if card.mouseCollide(event.pos):
-                            self.game.card_active.remove(card)
+                            self.game.moveList(self.game.card_active, self.game.card_used, card)
                             random_card = random.choice(self.game.card_deck)
                             self.game.moveList(self.game.card_deck, self.game.card_active, random_card)
                             i = 0
@@ -69,3 +69,4 @@ class DiscardState(BaseState):
                             self.state_machine.Change('play', {
                                 'game': self.game
                             })
+                            break

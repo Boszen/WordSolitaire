@@ -29,6 +29,7 @@ class GameMain:
             'draw': DrawState(self.g_state_manager),
             'discard': DiscardState(self.g_state_manager),
             'play': PlayState(self.g_state_manager),
+            'special': ApplySpecialState(self.g_state_manager),
             'between': BetweenRoundState(self.g_state_manager),
             'high_score': HighScoreState(self.g_state_manager),
             'game_over': GameOverState(self.g_state_manager),

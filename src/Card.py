@@ -21,6 +21,10 @@ class Card:
             return True
         else:
             return False
+    
+    def collide(self, target):
+        return not(self.x + self.width < target.x or self.x > target.x + target.width or
+                   self.y + self.height < target.y or self.y > target.y + target.height)
 
     def update(self, dt):
         pass

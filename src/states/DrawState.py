@@ -51,12 +51,10 @@ class DrawState(BaseState):
             random_card.x_default = random_card.x
             random_card.y_default = random_card.y
             self.game.moveList(self.game.card_deck, self.game.card_active, random_card)
-            print('play_check')
             self.state_machine.Change('play',{
                         'game': self.game
             })
         else:
-            print('discard_check')
             self.state_machine.Change('discard',{
                         'game': self.game
                 })

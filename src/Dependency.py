@@ -68,6 +68,7 @@ from src.states.DifficultySelectionState import DifficultySelectionState
 from src.states.DrawState import DrawState
 from src.states.DiscardState import DiscardState
 from src.states.PlayState import PlayState
+from src.states.ApplySpecialState import ApplySpecialState
 from src.states.BetweenRoundState import BetweenRoundState
 from src.states.GameOverState import GameOverState
 from src.states.HighScoreState import HighScoreState

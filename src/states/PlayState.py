@@ -93,6 +93,13 @@ class PlayState(BaseState):
                                 self.dragging_obj.y = self.dragging_obj.y_default
                                 
                         elif isinstance(self.dragging_obj, Card):
+                            for cell in self.game.board.cell:
+                                if self.dragging_obj.collide(cell):
+                                    self.game.moveList(self.game.card_active, self.game.card_used, self.dragging_obj)
+                                    self.state_machine.Change('special',{
+                                        'game': self.game
+                                    })
+                                    break
                             self.dragging_obj.x = self.dragging_obj.x_default
                             self.dragging_obj.y = self.dragging_obj.y_default
 
