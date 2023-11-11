@@ -4,6 +4,7 @@ from src.Card import Card
 from src.Alphabet import Alphabet
 from src.Board import Board
 from src.constants import *
+from src.Dependency import gFonts
 import pygame, sys, math
 
 class PlayState(BaseState):
@@ -16,15 +17,21 @@ class PlayState(BaseState):
 
     def Enter(self, params):
         self.game = params['game']
-        self.game.moveList(self.game.alphabet_deck,self.game.alphabet_active,'a')
-        self.game.moveList(self.game.alphabet_deck,self.game.alphabet_active,'a')
-        print(self.game.alphabet_deck)
-        self.game.moveList(self.game.card_deck,self.game.card_active,1)
-        self.game.moveList(self.game.card_deck,self.game.card_active,2)
-        print(self.game.card_active)
+
 
     def render(self, screen):
         self.game.render(screen)
+
+        t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
+        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        screen.blit(t_round, rect)
+        t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
+        rect = t_round.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        screen.blit(t_round, rect)
+
+        t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
+        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
+        screen.blit(t_round, rect)
 
     def update(self, dt, events):
         for event in events:
@@ -41,7 +48,7 @@ class PlayState(BaseState):
                                 card.dragging = True
                                 self.game.card_active.remove(self.dragging_obj)
                                 self.game.card_active.append(self.dragging_obj)
-                                print(self.dragging_obj.type)
+                                #print(self.dragging_obj.type)
                                 card.offset_x = card.x - event.pos[0]
                                 card.offset_y = card.y - event.pos[1]
 
@@ -50,12 +57,14 @@ class PlayState(BaseState):
                             if not self.dragging_obj:
                                 # Only allow 1 instance dragging
                                 self.dragging_obj = alphabet
-                                alphabet.dragging = True
+                                self.dragging_obj.dragging = True
+                                self.dragging_obj.docked = False
                                 self.game.alphabet_active.remove(self.dragging_obj)
                                 self.game.alphabet_active.append(self.dragging_obj)
-                                print(self.dragging_obj.type)
+                                #print(self.dragging_obj.type)
                                 alphabet.offset_x = alphabet.x - event.pos[0]
                                 alphabet.offset_y = alphabet.y - event.pos[1]
+                            #print(alphabet.docked)
                     
                     for cell in self.game.board.cell:
                         if cell.mouseCollide(event.pos):
@@ -68,7 +77,8 @@ class PlayState(BaseState):
                             collided_cell = []
                             for cell in self.game.board.cell:
                                 if self.dragging_obj.collide(cell):
-                                    collided_cell.append(cell)
+                                    if cell.occupied ==0:
+                                        collided_cell.append(cell)
                             if collided_cell != []:
                                 nearest_cell = collided_cell[0]
                                 for cell in collided_cell:
@@ -76,14 +86,38 @@ class PlayState(BaseState):
                                         nearest_cell = cell
                                 self.dragging_obj.x = nearest_cell.centerPoint()[0] - self.dragging_obj.width/2
                                 self.dragging_obj.y = nearest_cell.centerPoint()[1] - self.dragging_obj.height/2
+                                self.dragging_obj.docked = True
                                 nearest_cell.occupied = self.dragging_obj.type
+                            else:
+                                self.dragging_obj.x = self.dragging_obj.x_default
+                                self.dragging_obj.y = self.dragging_obj.y_default
+                                
+                        elif isinstance(self.dragging_obj, Card):
+                            self.dragging_obj.x = self.dragging_obj.x_default
+                            self.dragging_obj.y = self.dragging_obj.y_default
+
+                            #print(self.dragging_obj.docked)
 
                         self.dragging_obj.dragging = False
                         self.dragging_obj = None
 
                     for cell in self.game.board.cell: 
                         self.game.alphabet_matrix[cell.num[0]][cell.num[1]] = cell.occupied
-                    print(self.game.alphabet_matrix)
+                        #print(self.game.alphabet_matrix)
+
+                    all_alphabets_docked = True
+                    for alphabet in self.game.alphabet_active:
+                        if not alphabet.docked:
+                            all_alphabets_docked = False
+                            break
+
+                    if all_alphabets_docked:
+                        for alphabet in self.game.alphabet_active:
+                            self.game.alphabet_board.append(alphabet)
+                        self.game.alphabet_active = []
+                        self.state_machine.Change('draw', {
+                            'game': self.game
+                        })
 
         for card in self.game.card_active:
             if card.dragging:

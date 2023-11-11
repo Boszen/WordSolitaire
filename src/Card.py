@@ -8,8 +8,12 @@ class Card:
 
         self.dragging = False
 
-        self.x = WIDTH / 2 + 300
-        self.y = HEIGHT /2 + 100
+        self.x = 0
+        self.y = 0
+
+        self.x_default = 0
+        self.y_default = 0
+
         self.width ,self.height = image.get_size()
 
     def mouseCollide(self, target):

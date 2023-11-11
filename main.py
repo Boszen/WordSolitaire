@@ -27,6 +27,7 @@ class GameMain:
             'start': StartState(self.g_state_manager),
             'dif_select': DifficultySelectionState(self.g_state_manager),
             'draw': DrawState(self.g_state_manager),
+            'discard': DiscardState(self.g_state_manager),
             'play': PlayState(self.g_state_manager),
             'between': BetweenRoundState(self.g_state_manager),
             'high_score': HighScoreState(self.g_state_manager),

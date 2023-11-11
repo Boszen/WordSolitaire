@@ -9,6 +9,7 @@ class Game:
     def __init__(self):
         self.alphabet_deck = []
         self.alphabet_active = []
+        self.alphabet_board = []
         self.alphabet_used = []
         self.Generate_Alphabet()
         self.card_deck = []
@@ -16,7 +17,7 @@ class Game:
         self.card_used = []
         self.Generate_Card()
         self.alphabet_matrix = [[0 for _ in range(7)] for _ in range(7)]
-        self.turn = 0
+        self.round = 0
         self.board = Board()
         
     def Generate_Alphabet(self):
@@ -43,9 +44,9 @@ class Game:
         for card in card_image_list.keys():
             self.card_deck.append(Card(card,card_image_list[card]))
     
-    def moveList(self,listFrom,listTo,itemType):
+    def moveList(self,listFrom,listTo,item):
         for list in listFrom:
-            if list.type == itemType:
+            if list == item:
                 listFrom.remove(list)
                 listTo.append(list)
                 break
@@ -55,6 +56,8 @@ class Game:
 
     def render(self, screen):
         self.board.render(screen)
+        for alphabet in self.alphabet_board:
+            alphabet.render(screen)
         for alphabet in self.alphabet_active:
             alphabet.render(screen)
         for card in self.card_active:

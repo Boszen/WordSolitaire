@@ -1,12 +1,11 @@
 from src.states.BaseState import BaseState
 from src.constants import *
+from src.Dependency import gFonts
 import pygame, sys
 
 class StartState(BaseState):
     def __init__(self, state_manager):
         super(StartState, self).__init__(state_manager)
-        self.medium_font = pygame.font.Font('./fonts/font.ttf', 48)
-        self.large_font = pygame.font.Font('./fonts/font.ttf', 96)
 
         self.option = 1
 
@@ -18,7 +17,7 @@ class StartState(BaseState):
 
     def render(self, screen):
         # title
-        t_title = self.large_font.render("Word Solitaire", False, (255, 255, 255))
+        t_title = gFonts['pixel_96'].render("Word Solitaire", False, (255, 255, 255))
         rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3))
         screen.blit(t_title, rect)
 
@@ -31,10 +30,10 @@ class StartState(BaseState):
         if self.option == 2:
             t_highscore_color = (103, 255, 255)
 
-        t_start = self.medium_font.render("START", False, t_start_color)
+        t_start = gFonts['pixel_48'].render("START", False, t_start_color)
         rect = t_start.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 210))
         screen.blit(t_start, rect)
-        t_highscore = self.medium_font.render("HIGH SCORES", False, t_highscore_color)
+        t_highscore = gFonts['pixel_48'].render("HIGH SCORES", False, t_highscore_color)
         rect = t_highscore.get_rect(center=(WIDTH/2, HEIGHT/2 + 280))
         screen.blit(t_highscore, rect)
 

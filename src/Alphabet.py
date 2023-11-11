@@ -7,9 +7,14 @@ class Alphabet:
         self.image = image
 
         self.dragging = False
+        self.docked = False
 
-        self.x = WIDTH / 2 + 300
-        self.y = HEIGHT /2 
+        self.x = 0
+        self.y = 0 
+
+        self.x_default = 0
+        self.y_default = 0
+        
         self.width ,self.height = image.get_size()
 
     def mouseCollide(self, target):

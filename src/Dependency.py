@@ -6,7 +6,7 @@ import glob, os
 
 sprite_collection = SpriteManager().spriteCollection
 
-
+discard_bg = "./graphics/discardBg.png"
 
 card_image_list = {
 
@@ -56,6 +56,8 @@ gSounds = {
 }
 
 gFonts = {
+    'pixel_48': pygame.font.Font('./fonts/font.ttf', 48),
+    'pixel_96': pygame.font.Font('./fonts/font.ttf', 96)
 
 }
 
@@ -64,6 +66,7 @@ from src.StateMachine import StateMachine
 from src.states.StartState import StartState
 from src.states.DifficultySelectionState import DifficultySelectionState
 from src.states.DrawState import DrawState
+from src.states.DiscardState import DiscardState
 from src.states.PlayState import PlayState
 from src.states.BetweenRoundState import BetweenRoundState
 from src.states.GameOverState import GameOverState
