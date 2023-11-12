@@ -184,6 +184,13 @@
             "y":192,
             "scalefactor":1,
             "colorKey":-1
+        },
+        {
+            "name":"wild",
+            "x":128,
+            "y":192,
+            "scalefactor":1,
+            "colorKey":-1
         }
         
 ]

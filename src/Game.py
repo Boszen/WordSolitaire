@@ -17,6 +17,8 @@ class Game:
         self.card_used = []
         self.Generate_Card()
         self.alphabet_matrix = [[0 for _ in range(7)] for _ in range(7)]
+        self.alphabet_draw_amount = 3
+        self.card_draw_amount = 3
         self.round = 0
         self.board = Board()
         

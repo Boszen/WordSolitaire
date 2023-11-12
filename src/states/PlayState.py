@@ -17,6 +17,24 @@ class PlayState(BaseState):
 
     def Enter(self, params):
         self.game = params['game']
+        self.previous_row = 0
+        self.row = 0
+        self.column = 0
+
+        i = 0
+        for alphabet in self.game.alphabet_active:
+            self.row = math.floor(i/3)
+            if self.row == self.previous_row and i !=0:
+                self.column +=1
+            else:
+                self.column = 0 
+            alphabet.x = (self.column*100) + 935
+            alphabet.y = 370 - (self.row * 65)
+            alphabet.x_default = alphabet.x
+            alphabet.y_default = alphabet.y
+
+            self.previous_row = self.row
+            i += 1
 
 
     def render(self, screen):
@@ -51,6 +69,7 @@ class PlayState(BaseState):
                                 #print(self.dragging_obj.type)
                                 card.offset_x = card.x - event.pos[0]
                                 card.offset_y = card.y - event.pos[1]
+                                print(card.type)
 
                     for alphabet in reversed(self.game.alphabet_active):
                         if alphabet.mouseCollide(event.pos):
@@ -97,7 +116,8 @@ class PlayState(BaseState):
                                 if self.dragging_obj.collide(cell):
                                     self.game.moveList(self.game.card_active, self.game.card_used, self.dragging_obj)
                                     self.state_machine.Change('special',{
-                                        'game': self.game
+                                        'game': self.game,
+                                        'card_type': self.dragging_obj.type
                                     })
                                     break
                             self.dragging_obj.x = self.dragging_obj.x_default

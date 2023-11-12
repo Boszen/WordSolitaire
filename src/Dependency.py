@@ -9,17 +9,34 @@ sprite_collection = SpriteManager().spriteCollection
 discard_bg = "./graphics/discardBg.png"
 
 card_image_list = {
-
+    'wild_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'random_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'con_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'vowel_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'card_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'alphabet_overload':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'redraw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'remove':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'move':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'copy_it':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'say_that_word':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'x2_multiplier':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'x0.5_multiplier':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'block':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'x2_block':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'blind':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'random_remove':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'bonus':pygame.image.load('./graphics/playingCards/card-back1.png')
 }
 
-folder_path = "./graphics/playingCards"
+'''folder_path = "./graphics/playingCards"
 image_pattern = os.path.join(folder_path, "*.png") 
 image_files = glob.glob(image_pattern)
 
 key=0
 for value in image_files:
     card_image_list[key] =  pygame.image.load(value)
-    key +=1
+    key +=1'''
 
 alphabet_image_list = {
     'a': sprite_collection["a"].image,
@@ -47,7 +64,8 @@ alphabet_image_list = {
     'w': sprite_collection["w"].image,
     'x': sprite_collection["x"].image,
     'y': sprite_collection["y"].image,
-    'z': sprite_collection["z"].image
+    'z': sprite_collection["z"].image,
+    'wild': sprite_collection["wild"].image
 }
 
 
