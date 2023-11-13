@@ -44,14 +44,33 @@ class Game:
 
     def Generate_Card(self):
         for card in card_image_list.keys():
-            self.card_deck.append(Card(card,card_image_list[card]))
+            new_card = Card(card, card_image_list[card])
+            if card in ['wild_draw', 'random_draw', 'con_draw', 'vowel_draw', 'card_draw', 'redraw', 'draw', 'copy_it', 'alphabet_overload', 'say_that_word', 'remove']:
+                new_card.type = 'action'
+            else:
+                new_card.type = 'event'
+            self.card_deck.append(new_card)
     
     def moveList(self,listFrom,listTo,item):
         for list in listFrom:
             if list == item:
-                listFrom.remove(list)
                 listTo.append(list)
+                listFrom.remove(list)
                 break
+
+    def clearAlphabet(self):
+        for alphabet in self.alphabet_active:
+            self.alphabet_used.append(alphabet)
+        self.alphabet_active = []
+
+    def clearCard(self):
+        for card in self.card_active:
+            self.card_used.append(card)
+        self.card_active = []
+
+    def syncAlphabetMatrix(self):
+        for cell in self.board.cell: 
+            self.alphabet_matrix[cell.num[0]][cell.num[1]] = cell.occupied
 
     def update(self, dt):
         pass

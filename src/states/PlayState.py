@@ -33,7 +33,7 @@ class PlayState(BaseState):
             card.x_default = card.x
             card.y_default = card.y
             i += 1
-        print('Card_deck')
+        '''print('Card_deck')
         print(len(self.game.card_deck))
         print('Card_active')
         print(len(self.game.card_active))
@@ -47,7 +47,7 @@ class PlayState(BaseState):
         print(len(self.game.alphabet_board))
         print('Alphabet_used')
         print(len(self.game.alphabet_used))
-        print('--------------------')
+        print('--------------------')'''
 
     def render(self, screen):
         self.game.render(screen)
@@ -78,10 +78,10 @@ class PlayState(BaseState):
                                 card.dragging = True
                                 self.game.card_active.remove(self.dragging_obj)
                                 self.game.card_active.append(self.dragging_obj)
-                                #print(self.dragging_obj.type)
+                                #print(self.dragging_obj.name)
                                 card.offset_x = card.x - event.pos[0]
                                 card.offset_y = card.y - event.pos[1]
-                                print(card.type)
+                                print(card.name,", ",card.type)
 
                     for alphabet in reversed(self.game.alphabet_active):
                         if alphabet.mouseCollide(event.pos):
@@ -93,7 +93,7 @@ class PlayState(BaseState):
                                 self.dragging_obj.docked = False
                                 self.game.alphabet_active.remove(self.dragging_obj)
                                 self.game.alphabet_active.append(self.dragging_obj)
-                                #print(self.dragging_obj.type)
+                                #print(self.dragging_obj.name)
                                 alphabet.offset_x = alphabet.x - event.pos[0]
                                 alphabet.offset_y = alphabet.y - event.pos[1]
                             #print(alphabet.docked)
@@ -120,7 +120,7 @@ class PlayState(BaseState):
                                 self.dragging_obj.x = nearest_cell.centerPoint()[0] - self.dragging_obj.width/2
                                 self.dragging_obj.y = nearest_cell.centerPoint()[1] - self.dragging_obj.height/2
                                 self.dragging_obj.docked = True
-                                nearest_cell.occupied = self.dragging_obj.type
+                                nearest_cell.occupied = self.dragging_obj.name
                             else:
                                 self.dragging_obj.x = self.dragging_obj.x_default
                                 self.dragging_obj.y = self.dragging_obj.y_default
@@ -131,7 +131,7 @@ class PlayState(BaseState):
                                     self.game.moveList(self.game.card_active, self.game.card_used, self.dragging_obj)
                                     self.state_machine.Change('special',{
                                         'game': self.game,
-                                        'card_type': self.dragging_obj.type
+                                        'card_name': self.dragging_obj.name
                                     })
                                     break
                             self.dragging_obj.x = self.dragging_obj.x_default
@@ -142,9 +142,7 @@ class PlayState(BaseState):
                         self.dragging_obj.dragging = False
                         self.dragging_obj = None
 
-                    for cell in self.game.board.cell: 
-                        self.game.alphabet_matrix[cell.num[0]][cell.num[1]] = cell.occupied
-                        #print(self.game.alphabet_matrix)
+                        self.game.syncAlphabetMatrix()
 
                     all_alphabets_docked = True
                     for alphabet in self.game.alphabet_active:
@@ -154,6 +152,8 @@ class PlayState(BaseState):
 
                     if all_alphabets_docked:
                         for alphabet in self.game.alphabet_active:
+                            alphabet.x_default = alphabet.x
+                            alphabet.y_default = alphabet.y
                             self.game.alphabet_board.append(alphabet)
                         self.game.alphabet_active = []
                         self.state_machine.Change('draw', {
@@ -166,6 +166,12 @@ class PlayState(BaseState):
                             card.hover = True
                         else:
                             card.hover = False
+                for alphabet in reversed(self.game.alphabet_active):
+                        if alphabet.mouseCollide(event.pos) and not alphabet.dragging:
+                            alphabet.hover = True
+                        else:
+                            alphabet.hover = False
+                            
 
         for card in self.game.card_active:
             if card.dragging:

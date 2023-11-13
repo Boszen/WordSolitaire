@@ -10,13 +10,14 @@ import pygame, sys, math, random
 class ApplySpecialState(BaseState):
     def __init__(self, state_manager):
         super(ApplySpecialState, self).__init__(state_manager)
+        self.dragging_obj = None
     
     def Exit(self):
         pass
 
     def Enter(self, params):
         self.game = params['game']
-        self.card_type = params ['card_type']
+        self.card_name = params ['card_name']
 
         i = 0
         for card in self.game.card_active:
@@ -25,6 +26,17 @@ class ApplySpecialState(BaseState):
             card.x_default = card.x
             card.y_default = card.y
             i += 1
+
+        if self.card_name in ['move', 'copy_it']:
+            for alphabet in self.game.alphabet_active:
+                    for cell in self.game.board.cell:
+                        if alphabet.collide(cell):
+                            cell.occupied = 0
+                    alphabet.x = alphabet.x_default
+                    alphabet.y = alphabet.y_default
+                
+            self.game.syncAlphabetMatrix()
+            self.previous_alphabet_matrix = [row[:] for row in self.game.alphabet_matrix]
 
     def render(self, screen):
         self.game.render(screen)
@@ -40,25 +52,35 @@ class ApplySpecialState(BaseState):
         rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
         screen.blit(t_round, rect)
 
+        if self.card_name == 'move':
+            t_move = gFonts['pixel_32'].render("Move", False, (255,255,255))
+            rect = t_move.get_rect(center=(WIDTH/2, HEIGHT - 50))
+            screen.blit(t_move, rect)
+        
+        if self.card_name == 'copy_it':
+            t_move = gFonts['pixel_32'].render("Copy", False, (255,255,255))
+            rect = t_move.get_rect(center=(WIDTH/2, HEIGHT - 50))
+            screen.blit(t_move, rect)
+
     def update(self, dt, events):
-        if self.card_type == 'wild_draw':
+        if self.card_name == 'wild_draw':
             wild_alphabet = Alphabet('wild',alphabet_image_list['wild'])
             wild_alphabet.sequence = len(self.game.alphabet_active)
             self.game.alphabet_active.append(wild_alphabet)
             self.state_machine.Change('play',{
                         'game': self.game
                     })
-        elif self.card_type == 'random_draw':
+        elif self.card_name == 'random_draw':
             random_alphabet = random.choice(self.game.alphabet_deck)
             random_alphabet.sequence = len(self.game.alphabet_active)
             self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)
             self.state_machine.Change('play',{
                         'game': self.game
                     })
-        elif self.card_type == 'con_draw':
+        elif self.card_name == 'con_draw':
             con_alphabet = []
             for alphabet in self.game.alphabet_deck:
-                if not alphabet.type in ['a', 'e', 'i', 'o', 'u']:
+                if not alphabet.name in ['a', 'e', 'i', 'o', 'u']:
                     con_alphabet.append(alphabet)
             random_con_alphabet = random.choice(con_alphabet)
             random_con_alphabet.sequence = len(self.game.alphabet_active)
@@ -66,10 +88,10 @@ class ApplySpecialState(BaseState):
             self.state_machine.Change('play',{
                         'game': self.game
                     })
-        elif self.card_type == 'vowel_draw':
+        elif self.card_name == 'vowel_draw':
             vowel_alphabet = []
             for alphabet in self.game.alphabet_deck:
-                if alphabet.type in ['a', 'e', 'i', 'o', 'u']:
+                if alphabet.name in ['a', 'e', 'i', 'o', 'u']:
                     vowel_alphabet.append(alphabet)
             random_vowel_alphabet = random.choice(vowel_alphabet)
             random_vowel_alphabet.sequence = len(self.game.alphabet_active)
@@ -77,7 +99,7 @@ class ApplySpecialState(BaseState):
             self.state_machine.Change('play',{
                         'game': self.game
                     })
-        elif self.card_type == 'card_draw':
+        elif self.card_name == 'card_draw':
             card_draw = []
             for i in range (0,2):
                 random_card = random.choice(self.game.card_deck)
@@ -96,11 +118,115 @@ class ApplySpecialState(BaseState):
                 self.state_machine.Change('play', {
                     'game': self.game
                 })
-        elif self.card_type == 'redraw':
-            pass
+        elif self.card_name == 'redraw':
+            amount_to_draw = len(self.game.alphabet_active)
+            self.game.clearAlphabet()
+
+            for i in range(0,amount_to_draw):
+                random_alphabet = random.choice(self.game.alphabet_deck)
+                random_alphabet.sequence = len(self.game.alphabet_active)
+                self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)
+            self.state_machine.Change('play',{
+                    'game': self.game
+            })
+        elif self.card_name == 'move':                            
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:  # Left mouse button
+                        for alphabet in reversed(self.game.alphabet_board):
+                            if alphabet.mouseCollide(event.pos):
+                                if not self.dragging_obj:
+                                    # Only allow 1 instance dragging
+                                    self.dragging_obj = alphabet
+                                    self.dragging_obj.dragging = True
+                                    self.dragging_obj.docked = False
+                                    self.game.alphabet_board.remove(self.dragging_obj)
+                                    self.game.alphabet_board.append(self.dragging_obj)
+                                    #print(self.dragging_obj.name)
+                                    alphabet.offset_x = alphabet.x - event.pos[0]
+                                    alphabet.offset_y = alphabet.y - event.pos[1]
+                                #print(alphabet.docked)
+
+                        for cell in self.game.board.cell:
+                            if cell.mouseCollide(event.pos):
+                                cell.occupied = 0
+
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1:  # Left mouse button
+                        if self.dragging_obj:
+                            if isinstance(self.dragging_obj, Alphabet):
+                                self.dragging_obj.hover = False
+                                collided_cell = []
+                                for cell in self.game.board.cell:
+                                    if self.dragging_obj.collide(cell):
+                                        if cell.occupied ==0:
+                                            collided_cell.append(cell)
+                                if collided_cell != []:
+                                    nearest_cell = collided_cell[0]
+                                    for cell in collided_cell:
+                                        if math.dist(cell.centerPoint(), self.dragging_obj.centerPoint()) < math.dist(nearest_cell.centerPoint(), self.dragging_obj.centerPoint()) :
+                                            nearest_cell = cell
+                                    self.dragging_obj.x = nearest_cell.centerPoint()[0] - self.dragging_obj.width/2
+                                    self.dragging_obj.y = nearest_cell.centerPoint()[1] - self.dragging_obj.height/2
+                                    self.dragging_obj.x_default = self.dragging_obj.x
+                                    self.dragging_obj.y_default = self.dragging_obj.y
+                                    self.dragging_obj.docked = True
+                                    nearest_cell.occupied = self.dragging_obj.name
+                                else:
+                                    self.dragging_obj.x = self.dragging_obj.x_default
+                                    self.dragging_obj.y = self.dragging_obj.y_default
+                                    for cell in self.game.board.cell:
+                                        if self.dragging_obj.collide(cell):
+                                            if cell.occupied == 0:
+                                                cell.occupied = self.dragging_obj.name
+                                    self.dragging_obj.docked = True
+
+                            self.dragging_obj.dragging = False
+                            self.dragging_obj = None
+
+                            self.game.syncAlphabetMatrix()
+
+                            if self.game.alphabet_matrix == self.previous_alphabet_matrix:
+                                pass
+                            else:
+                                self.state_machine.Change('play',{
+                                    'game': self.game
+                                })
+                elif event.type == pygame.MOUSEMOTION:
+                    for alphabet in reversed(self.game.alphabet_board):
+                        if alphabet.mouseCollide(event.pos) and not alphabet.dragging:
+                            alphabet.hover = True
+                        else:
+                            alphabet.hover = False
                 
+        elif self.card_name == 'copy_it':
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:  # Left mouse button
+                        print(self.game.alphabet_board)
+                        for alphabet in self.game.alphabet_board:
+                            if alphabet.mouseCollide(event.pos):
+                                alphabet.hover = False
+                                copy_alphabet = Alphabet(alphabet.name, alphabet.image)
+                                copy_alphabet.sequence = len(self.game.alphabet_active)
+                                self.game.alphabet_active.append(copy_alphabet)
+                                self.state_machine.Change('play',{
+                                    'game': self.game
+                                })
+                elif event.type == pygame.MOUSEMOTION:
+                    for alphabet in reversed(self.game.alphabet_board):
+                        if alphabet.mouseCollide(event.pos) and not alphabet.dragging:
+                            alphabet.hover = True
+                        else:
+                            alphabet.hover = False
 
-
+        for alphabet in self.game.alphabet_board:
+            if alphabet.dragging:
+                new_x, new_y = pygame.mouse.get_pos()
+                new_x += alphabet.offset_x
+                new_y += alphabet.offset_y
+                alphabet.x = new_x
+                alphabet.y = new_y
 
         for event in events:
             if event.type == pygame.QUIT:

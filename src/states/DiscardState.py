@@ -48,9 +48,9 @@ class DiscardState(BaseState):
         t_card_draw = ""
         for draw in self.card_draw:
             if i == 0:
-                t_card_draw += draw.type 
+                t_card_draw += draw.name 
             else:
-                t_card_draw += f", {draw.type}"
+                t_card_draw += f", {draw.name}"
             i += 1
 
         t_draws = gFonts['pixel_32'].render(f"Your drawing contain : {t_card_draw}", False, (255, 255, 255))
@@ -111,7 +111,6 @@ class DiscardState(BaseState):
                     card.hover_width = card.width +10
                     card.hover_height= card.height +10
                 i += 1
-            print(self.game.card_active)
              
             self.state_machine.Change('play', {
                 'game': self.game

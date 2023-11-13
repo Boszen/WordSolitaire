@@ -11,8 +11,6 @@ class DrawState(BaseState):
     def __init__(self, state_manager):
         super(DrawState, self).__init__(state_manager)
         self.game = Game()
-        
-        
     
     def Exit(self):
         pass
@@ -37,7 +35,7 @@ class DrawState(BaseState):
                 self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)
 
         random_card = random.choice(self.game.card_deck)
-        #random_card = Card('card_draw',card_image_list['card_draw'])
+        #random_card = Card('move',card_image_list['move'])
         random_card.x = len(self.game.card_active) * 130 + 890
         random_card.y = 460
         random_card.x_default = random_card.x

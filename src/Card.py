@@ -2,8 +2,9 @@ import pygame
 from src.constants import *
 
 class Card:
-    def __init__(self, type, image):
-        self.type = type
+    def __init__(self, name, image):
+        self.name = name
+        self.type = None
         self.image = image
 
         self.dragging = False

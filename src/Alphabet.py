@@ -2,11 +2,12 @@ import pygame
 from src.constants import *
 
 class Alphabet:
-    def __init__(self, type, image):
-        self.type = type
+    def __init__(self, name, image):
+        self.name = name
         self.image = image
 
         self.dragging = False
+        self.hover = False
         self.docked = False
         self.sequence = 0
 
@@ -17,6 +18,8 @@ class Alphabet:
         self.y_default = 0
         
         self.width ,self.height = image.get_size()
+        self.hover_width = self.width + 5
+        self.hover_height = self.height + 5
 
     def mouseCollide(self, target):
         if self.x < target[0] < self.x + self.width and self.y < target[1] < self.y + self.height:
@@ -38,4 +41,6 @@ class Alphabet:
         pass
 
     def render(self, screen):
+       if self.hover:
+            pygame.draw.rect(screen, (255,0,0), (self.x + self.width/2 - self.hover_width/2 , self.y + self.height/2 - self.hover_height/2, self.hover_width, self.hover_height))
        screen.blit(self.image, (self.x, self.y ))
