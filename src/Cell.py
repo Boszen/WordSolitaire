@@ -5,6 +5,7 @@ class Cell:
     def __init__(self, num, x, y):
         self.num = num
         self.occupied = 0
+        self.turn_locked = False
         self.image = None
         self.special = 'none'
 

@@ -8,6 +8,7 @@ class Alphabet:
 
         self.dragging = False
         self.docked = False
+        self.sequence = 0
 
         self.x = 0
         self.y = 0 

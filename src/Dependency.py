@@ -14,8 +14,8 @@ card_image_list = {
     'con_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'vowel_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'card_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'alphabet_overload':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'redraw':pygame.image.load('./graphics/playingCards/card-back1.png'),
+    'alphabet_overload':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'remove':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'move':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'copy_it':pygame.image.load('./graphics/playingCards/card-back1.png'),
@@ -74,9 +74,9 @@ gSounds = {
 }
 
 gFonts = {
+    'pixel_32': pygame.font.Font('./fonts/font.ttf',32),
     'pixel_48': pygame.font.Font('./fonts/font.ttf', 48),
     'pixel_96': pygame.font.Font('./fonts/font.ttf', 96)
-
 }
 
 

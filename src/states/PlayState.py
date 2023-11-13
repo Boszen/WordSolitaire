@@ -17,25 +17,37 @@ class PlayState(BaseState):
 
     def Enter(self, params):
         self.game = params['game']
-        self.previous_row = 0
-        self.row = 0
-        self.column = 0
 
-        i = 0
         for alphabet in self.game.alphabet_active:
-            self.row = math.floor(i/3)
-            if self.row == self.previous_row and i !=0:
-                self.column +=1
-            else:
-                self.column = 0 
-            alphabet.x = (self.column*100) + 935
-            alphabet.y = 370 - (self.row * 65)
-            alphabet.x_default = alphabet.x
-            alphabet.y_default = alphabet.y
-
-            self.previous_row = self.row
+            row = math.floor(alphabet.sequence/3)
+            column = alphabet.sequence % 3
+            if not alphabet.docked:
+                alphabet.x = (column*100) + 935
+                alphabet.y = 370 - (row * 65)
+                alphabet.x_default = alphabet.x
+                alphabet.y_default = alphabet.y
+        i = 0
+        for card in self.game.card_active:
+            card.x = i * 130 + 890
+            card.y = 460
+            card.x_default = card.x
+            card.y_default = card.y
             i += 1
-
+        print('Card_deck')
+        print(len(self.game.card_deck))
+        print('Card_active')
+        print(len(self.game.card_active))
+        print('Card_used')
+        print(len(self.game.card_used))
+        print('Alphabet_deck')
+        print(len(self.game.alphabet_deck))
+        print('Alphabet_active')
+        print(len(self.game.alphabet_active))
+        print('Alphabet_board')
+        print(len(self.game.alphabet_board))
+        print('Alphabet_used')
+        print(len(self.game.alphabet_used))
+        print('--------------------')
 
     def render(self, screen):
         self.game.render(screen)
@@ -73,6 +85,7 @@ class PlayState(BaseState):
 
                     for alphabet in reversed(self.game.alphabet_active):
                         if alphabet.mouseCollide(event.pos):
+                            #print(alphabet.sequence)
                             if not self.dragging_obj:
                                 # Only allow 1 instance dragging
                                 self.dragging_obj = alphabet
@@ -87,7 +100,8 @@ class PlayState(BaseState):
                     
                     for cell in self.game.board.cell:
                         if cell.mouseCollide(event.pos):
-                            cell.occupied = 0
+                            if not cell.turn_locked:
+                                cell.occupied = 0
                                 
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:  # Left mouse button
@@ -145,6 +159,13 @@ class PlayState(BaseState):
                         self.state_machine.Change('draw', {
                             'game': self.game
                         })
+
+            elif event.type == pygame.MOUSEMOTION:
+                for card in reversed(self.game.card_active):
+                        if card.mouseCollide(event.pos) and not card.dragging:
+                            card.hover = True
+                        else:
+                            card.hover = False
 
         for card in self.game.card_active:
             if card.dragging:
