@@ -9,3 +9,7 @@ CELL_SIZE = 64
 RANK_EASY = "./rankEasy.lst"
 RANK_MEDIUM = "./rankMedium.lst"
 RANK_HARD = "./rankHard.lst"
+
+WORDS = [
+    'aaa', 'def', 'xyz', 'ijk'
+]

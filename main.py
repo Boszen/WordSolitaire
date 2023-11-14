@@ -29,7 +29,8 @@ class GameMain:
             'draw': DrawState(self.g_state_manager),
             'discard': DiscardState(self.g_state_manager),
             'play': PlayState(self.g_state_manager),
-            'special': ApplySpecialState(self.g_state_manager),
+            'action': ApplyActionState(self.g_state_manager),
+            'event': ApplyEventState(self.g_state_manager),
             'between': BetweenRoundState(self.g_state_manager),
             'high_score': HighScoreState(self.g_state_manager),
             'game_over': GameOverState(self.g_state_manager),
@@ -39,21 +40,21 @@ class GameMain:
     def LoadHighScores(self):
         if not os.path.exists(RANK_EASY):
             with open(RANK_EASY, "w") as fp:
-                for i in range(0, 10):
+                for i in range(10):
                     scores ="AAA\n" + str((10-i)*10) + "\n"
                     fp.write(scores)
                 fp.close()
 
         if not os.path.exists(RANK_MEDIUM):
             with open(RANK_MEDIUM, "w") as fp:
-                for i in range(0, 10):
+                for i in range(10):
                     scores ="BBB\n" + str((10-i)*10) + "\n"
                     fp.write(scores)
                 fp.close()
 
         if not os.path.exists(RANK_HARD):
             with open(RANK_HARD, "w") as fp:
-                for i in range(0, 10):
+                for i in range(10):
                     scores ="CCC\n" + str((10-i)*10) + "\n"
                     fp.write(scores)
                 fp.close()

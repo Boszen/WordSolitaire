@@ -100,6 +100,7 @@ class PlayState(BaseState):
                     
                     for cell in self.game.board.cell:
                         if cell.mouseCollide(event.pos):
+                            print(cell.num)
                             if not cell.turn_locked:
                                 cell.occupied = 0
                                 
@@ -110,7 +111,7 @@ class PlayState(BaseState):
                             collided_cell = []
                             for cell in self.game.board.cell:
                                 if self.dragging_obj.collide(cell):
-                                    if cell.occupied ==0:
+                                    if cell.occupied ==0 and cell.special != 'block_tile':
                                         collided_cell.append(cell)
                             if collided_cell != []:
                                 nearest_cell = collided_cell[0]
@@ -121,6 +122,7 @@ class PlayState(BaseState):
                                 self.dragging_obj.y = nearest_cell.centerPoint()[1] - self.dragging_obj.height/2
                                 self.dragging_obj.docked = True
                                 nearest_cell.occupied = self.dragging_obj.name
+                                
                             else:
                                 self.dragging_obj.x = self.dragging_obj.x_default
                                 self.dragging_obj.y = self.dragging_obj.y_default
@@ -129,7 +131,7 @@ class PlayState(BaseState):
                             for cell in self.game.board.cell:
                                 if self.dragging_obj.collide(cell):
                                     self.game.moveList(self.game.card_active, self.game.card_used, self.dragging_obj)
-                                    self.state_machine.Change('special',{
+                                    self.state_machine.Change('action',{
                                         'game': self.game,
                                         'card_name': self.dragging_obj.name
                                     })
@@ -143,6 +145,8 @@ class PlayState(BaseState):
                         self.dragging_obj = None
 
                         self.game.syncAlphabetMatrix()
+                        self.game.findWords()
+                        print(self.game.formed_words)
 
                     all_alphabets_docked = True
                     for alphabet in self.game.alphabet_active:

@@ -7,9 +7,9 @@ from src.constants import *
 from src.Dependency import *
 import pygame, sys, math, random
 
-class ApplySpecialState(BaseState):
+class ApplyActionState(BaseState):
     def __init__(self, state_manager):
-        super(ApplySpecialState, self).__init__(state_manager)
+        super(ApplyActionState, self).__init__(state_manager)
         self.dragging_obj = None
     
     def Exit(self):
@@ -63,6 +63,7 @@ class ApplySpecialState(BaseState):
             screen.blit(t_move, rect)
 
     def update(self, dt, events):
+        self.game.update(dt)
         if self.card_name == 'wild_draw':
             wild_alphabet = Alphabet('wild',alphabet_image_list['wild'])
             wild_alphabet.sequence = len(self.game.alphabet_active)
@@ -80,7 +81,7 @@ class ApplySpecialState(BaseState):
         elif self.card_name == 'con_draw':
             con_alphabet = []
             for alphabet in self.game.alphabet_deck:
-                if not alphabet.name in ['a', 'e', 'i', 'o', 'u']:
+                if not alphabet.name in ['a', 'e', 'i', 'o', 'u', 'wild']:
                     con_alphabet.append(alphabet)
             random_con_alphabet = random.choice(con_alphabet)
             random_con_alphabet.sequence = len(self.game.alphabet_active)
@@ -101,8 +102,10 @@ class ApplySpecialState(BaseState):
                     })
         elif self.card_name == 'card_draw':
             card_draw = []
-            for i in range (0,2):
+            for i in range (2):
                 random_card = random.choice(self.game.card_deck)
+                while random_card.type == 'event':
+                    random_card = random.choice(self.game.card_deck)
                 card_draw.append(random_card)
 
             if len(self.game.card_active) + len(card_draw) > 3:
@@ -122,7 +125,7 @@ class ApplySpecialState(BaseState):
             amount_to_draw = len(self.game.alphabet_active)
             self.game.clearAlphabet()
 
-            for i in range(0,amount_to_draw):
+            for i in range(amount_to_draw):
                 random_alphabet = random.choice(self.game.alphabet_deck)
                 random_alphabet.sequence = len(self.game.alphabet_active)
                 self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)

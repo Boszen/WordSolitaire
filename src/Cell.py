@@ -1,13 +1,15 @@
 import pygame
 from src.constants import *
+from src.Dependency import *
 
 class Cell:
     def __init__(self, num, x, y):
         self.num = num
         self.occupied = 0
         self.turn_locked = False
+        self.special = None
         self.image = None
-        self.special = 'none'
+        self.color = (255,255,255)
 
         self.x = x
         self.y = y
@@ -28,10 +30,20 @@ class Cell:
     def collide(self, target):
         return not(self.x + self.width < target.x or self.x > target.x + target.width or
                    self.y + self.height < target.y or self.y > target.y + target.height)
+    
+    def reset(self):
+        self.occupied = 0
+        self.turn_locked = False
+        self.special = None
+        self.color = (255,255,255)
 
-    def update(self, dt):
-        pass
+    def update(self):
+        if self.special != None:
+            self.image = tile_image_list[self.special]
+        else:
+            self.image = None
 
     def render(self, screen):
-       #screen.blit(self.image, (self.x, self.y ))
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(self.x,self.y,self.width,self.height))
+        pygame.draw.rect(screen, self.color, pygame.Rect(self.x,self.y,self.width,self.height))
+        if self.special != None:
+            screen.blit(self.image, (self.x, self.y ))

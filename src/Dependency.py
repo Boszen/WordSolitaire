@@ -8,6 +8,12 @@ sprite_collection = SpriteManager().spriteCollection
 
 discard_bg = "./graphics/discardBg.png"
 
+tile_image_list = {
+    'x2_tile': sprite_collection["x2_tile"].image,
+    'x0.5_tile': sprite_collection["x0.5_tile"].image,
+    'block_tile': sprite_collection["block_tile"].image,
+}
+
 card_image_list = {
     'wild_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
     'random_draw':pygame.image.load('./graphics/playingCards/card-back1.png'),
@@ -86,7 +92,8 @@ from src.states.DifficultySelectionState import DifficultySelectionState
 from src.states.DrawState import DrawState
 from src.states.DiscardState import DiscardState
 from src.states.PlayState import PlayState
-from src.states.ApplySpecialState import ApplySpecialState
+from src.states.ApplyActionState import ApplyActionState
+from src.states.ApplyEventState import ApplyEventState
 from src.states.BetweenRoundState import BetweenRoundState
 from src.states.GameOverState import GameOverState
 from src.states.HighScoreState import HighScoreState

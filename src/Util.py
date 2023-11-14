@@ -95,7 +95,8 @@ class SpriteManager:
     def __init__(self):
         self.spriteCollection = self.loadSprites(
             [
-                "./sprites/Alphabet.json"
+                "./sprites/Alphabet.json",
+                "./sprites/SpecialTile.json"
             ]
         )
 
