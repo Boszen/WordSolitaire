@@ -4,7 +4,7 @@ from src.Card import Card
 from src.Alphabet import Alphabet
 from src.Board import Board
 from src.constants import *
-from src.Dependency import gFonts
+from src.Dependency import *
 import pygame, sys, math
 
 class PlayState(BaseState):
@@ -104,7 +104,7 @@ class PlayState(BaseState):
                                 #print(self.dragging_obj.name)
                                 card.offset_x = card.x - event.pos[0]
                                 card.offset_y = card.y - event.pos[1]
-                                print(card.name,", ",card.type)
+                                #print(card.name,", ",card.type)
 
                     for alphabet in reversed(self.game.alphabet_active):
                         if alphabet.mouseCollide(event.pos):
@@ -128,7 +128,7 @@ class PlayState(BaseState):
                     
                     for cell in self.game.board.cell:
                         if cell.mouseCollide(event.pos):
-                            print(cell.num)
+                            #print(cell.num)
                             if not cell.turn_locked:
                                 cell.occupied = 0
                                 
@@ -150,6 +150,7 @@ class PlayState(BaseState):
                                 self.dragging_obj.y = nearest_cell.centerPoint()[1] - self.dragging_obj.height/2
                                 self.dragging_obj.docked = True
                                 nearest_cell.occupied = self.dragging_obj.name
+                                gSounds['place'].play()
                                 
                             else:
                                 self.dragging_obj.x = self.dragging_obj.x_default

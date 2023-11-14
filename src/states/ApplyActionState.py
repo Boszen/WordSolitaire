@@ -18,6 +18,7 @@ class ApplyActionState(BaseState):
     def Enter(self, params):
         self.game = params['game']
         self.card_name = params ['card_name']
+        gSounds['action'].play()
 
         i = 0
         for card in self.game.card_active:
@@ -160,10 +161,12 @@ class ApplyActionState(BaseState):
             })
         elif self.card_name == 'move':  
             if self.game.alphabet_board == []:
+                gSounds['error'].play()
                 self.game.card_active.append(Card('move',card_image_list['move']))
                 self.state_machine.Change('play',{
                     'game': self.game
-            })                        
+                })      
+                    
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # Left mouse button
@@ -206,6 +209,7 @@ class ApplyActionState(BaseState):
                                     self.dragging_obj.y_default = self.dragging_obj.y
                                     self.dragging_obj.docked = True
                                     nearest_cell.occupied = self.dragging_obj.name
+                                    gSounds['place'].play()
                                 else:
                                     self.dragging_obj.x = self.dragging_obj.x_default
                                     self.dragging_obj.y = self.dragging_obj.y_default
@@ -236,14 +240,15 @@ class ApplyActionState(BaseState):
                 
         elif self.card_name == 'copy_it':
             if self.game.alphabet_board == []:
+                gSounds['error'].play()
                 self.game.card_active.append(Card('copy_it',card_image_list['copy_it']))
                 self.state_machine.Change('play',{
                     'game': self.game
-            })     
+                })     
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # Left mouse button
-                        print(self.game.alphabet_board)
+                        #print(self.game.alphabet_board)
                         for alphabet in self.game.alphabet_board:
                             if alphabet.mouseCollide(event.pos):
                                 alphabet.hover = False

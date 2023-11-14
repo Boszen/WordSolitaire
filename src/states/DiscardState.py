@@ -110,6 +110,7 @@ class DiscardState(BaseState):
                 if event.button == 1:  # Left mouse button
                     for card in self.game.card_active:
                         if card.mouseCollide(event.pos):
+                            gSounds['select'].play()
                             if card in self.card_discard:
                                 self.card_discard.remove(card)
                             else:  

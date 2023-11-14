@@ -95,6 +95,7 @@ class WildSelectionState(BaseState):
                 if event.button == 1:
                     for alphabet in self.alphabet_show:
                         if alphabet.mouseCollide(event.pos):
+                            gSounds['select'].play()
                             self.alphabet_tile.name = alphabet.name
                             self.alphabet_tile.image = alphabet.image
                             self.alphabet_tile.dragging = False

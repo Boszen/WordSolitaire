@@ -21,6 +21,7 @@ class ApplyEventState(BaseState):
         self.game = params['game']
         self.card_name = params ['card_name']
         self.card_name_check = params ['card_name']
+        gSounds['event'].play()
 
     def render(self, screen):
         self.game.render(screen)

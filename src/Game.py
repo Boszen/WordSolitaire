@@ -25,6 +25,7 @@ class Game:
         self.round = 0
         self.score = 0
         self.formed_words = []
+        self.dict = []
         self.board = Board()
         
     def Generate_Alphabet(self):
@@ -96,19 +97,21 @@ class Game:
         # Check horizontally
         for row_idx, row in enumerate(self.alphabet_matrix):
             row_str = ''.join(str(alphabet) for alphabet in row)  # Convert each element to a string
-            for word in WORDS:
+            for word in self.dict:
                 if word in row_str:
                     col_idx = row_str.index(word)
                     index = [(row_idx, col_idx + i) for i in range(len(word))]
                     formed_words_and_indices.append((word,index))
+                    gSounds['score'].play()
         
         for col_idx in range(len(self.alphabet_matrix[0])):
             col_str = ''.join(str(self.alphabet_matrix[row][col_idx]) for row in range(len(self.alphabet_matrix)))
-            for word in WORDS:
+            for word in self.dict:
                 if word in col_str:
                     row_idx = col_str.index(word)
                     index = [(row_idx + i, col_idx) for i in range(len(word))]
                     formed_words_and_indices.append((word,index))
+                    gSounds['score'].play()
 
         for word,indices in formed_words_and_indices:
             self.formed_words.append(word)

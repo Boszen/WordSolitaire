@@ -4,7 +4,7 @@ from src.Card import Card
 from src.Alphabet import Alphabet
 from src.Board import Board
 from src.constants import *
-from src.Dependency import gFonts
+from src.Dependency import *
 import pygame, sys, math
 
 class GameOverState(BaseState):
@@ -24,7 +24,7 @@ class GameOverState(BaseState):
         self.difficulty = self.game.difficulty
 
         self.current_score = self.game.high_score[self.difficulty]
-        print(self.current_score)
+        #print(self.current_score)
 
     def update(self, dt, events):
           for event in events:
@@ -33,6 +33,7 @@ class GameOverState(BaseState):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
+                    gSounds['enter'].play()
                     is_break_record = False
                     rank = 11
 

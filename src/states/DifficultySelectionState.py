@@ -1,6 +1,7 @@
 from src.states.BaseState import BaseState
 from src.Game import Game
 from src.constants import *
+from src.Dependency import *
 import pygame,sys, random
 
 
@@ -26,34 +27,44 @@ class DifficultySelectionState(BaseState):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
+                    gSounds['select'].play()
                     # Move the selection up
                     if self.difficulty == 1:
                         self.difficulty = 3 
                     else:
                         self.difficulty -=1
                 elif event.key == pygame.K_DOWN:
+                    gSounds['select'].play()
                     # Move the selection down
                     if self.difficulty == 3:
                         self.difficulty = 1 
                     else:
                         self.difficulty +=1
                 elif event.key == pygame.K_RETURN:
+                    gSounds['enter'].play()
                     game = Game(self.difficulty, self.high_scores)
                     starter_block_cell = []
                     if self.difficulty == 1:
+                        game.dict = WORDS
                         for i in range(2):
                             starter_block_cell.append(random.choice(game.board.cell))
                         for cell in starter_block_cell:
                             cell.special = 'block_tile'
                             cell.color = (150,150,150)
                     elif self.difficulty == 2:
+                        for word in WORDS:
+                            if 4 <= len(word) <= 7:
+                                game.dict.append(word)
                         for i in range(4):
                             starter_block_cell.append(random.choice(game.board.cell))
                         for cell in starter_block_cell:
                             cell.special = 'block_tile'
                             cell.color = (150,150,150)
                     elif self.difficulty == 3:
-                        for i in range(8):
+                        for word in WORDS:
+                            if 5 <= len(word) <= 7:
+                                game.dict.append(word)
+                        for i in range(4):
                             starter_block_cell.append(random.choice(game.board.cell))
                         for cell in starter_block_cell:
                             cell.special = 'block_tile'
@@ -78,11 +89,11 @@ class DifficultySelectionState(BaseState):
         rect_hard = t_hard.get_rect(center=(WIDTH / 2, 450))
 
         if self.difficulty == 1:
-            t_easy = self.medium_font.render("Easy", False, active_color)
+            t_easy = self.medium_font.render("Easy (3 Alphabet)", False, active_color)
         elif self.difficulty == 2:
-            t_medium = self.medium_font.render("Medium", False, active_color)
+            t_medium = self.medium_font.render("Medium (4 Alphabet)", False, active_color)
         elif self.difficulty == 3:
-            t_hard = self.medium_font.render("Hard", False, active_color)
+            t_hard = self.medium_font.render("Hard (5 Alphabet)", False, active_color)
 
         screen.blit(t_easy, rect_easy)
         screen.blit(t_medium, rect_medium)

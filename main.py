@@ -32,7 +32,6 @@ class GameMain:
             'wild': WildSelectionState(self.g_state_manager),
             'action': ApplyActionState(self.g_state_manager),
             'event': ApplyEventState(self.g_state_manager),
-            'between': BetweenRoundState(self.g_state_manager),
             'high_score': HighScoreState(self.g_state_manager),
             'enter_high_score': EnterHighScoreState(self.g_state_manager),
             'game_over': GameOverState(self.g_state_manager)

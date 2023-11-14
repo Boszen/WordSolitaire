@@ -4,7 +4,7 @@ from src.Card import Card
 from src.Alphabet import Alphabet
 from src.Board import Board
 from src.constants import *
-from src.Dependency import gFonts
+from src.Dependency import *
 import pygame, sys, math
 
 class EnterHighScoreState(BaseState):
@@ -47,15 +47,18 @@ class EnterHighScoreState(BaseState):
                     self.highlighted_char +=1
 
                 if event.key == pygame.K_UP:
+                    gSounds['select'].play()
                     self.chars[str(self.highlighted_char)] = self.chars[str(self.highlighted_char)] + 1
                     if self.chars[str(self.highlighted_char)] > 90:
                         self.chars[str(self.highlighted_char)] = 65
                 elif event.key == pygame.K_DOWN:
+                    gSounds['select'].play()
                     self.chars[str(self.highlighted_char)] = self.chars[str(self.highlighted_char)] - 1
                     if self.chars[str(self.highlighted_char)] < 65:
                         self.chars[str(self.highlighted_char)] = 90
 
                 if event.key == pygame.K_RETURN:
+                    gSounds['score'].play()
                     name = chr(self.chars['1'])+chr(self.chars['2']) + chr(self.chars['3'])
 
                     for i in range(8, self.score_index-1, -1):

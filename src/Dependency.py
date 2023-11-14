@@ -51,7 +51,14 @@ for value in image_files:
     i += 1
 
 gSounds = {
-  
+  'action': pygame.mixer.Sound('./sounds/Action.wav'),
+  'enter': pygame.mixer.Sound('./sounds/Enter.wav'),
+  'error': pygame.mixer.Sound('./sounds/Error.wav'),
+  'event': pygame.mixer.Sound('./sounds/Event.wav'),
+  'exit': pygame.mixer.Sound('./sounds/Exit.wav'),
+  'place': pygame.mixer.Sound('./sounds/Place.wav'),
+  'score': pygame.mixer.Sound('./sounds/Score.wav'),
+  'select': pygame.mixer.Sound('./sounds/Select.wav')
 }
 
 gFonts = {
@@ -70,7 +77,6 @@ from src.states.PlayState import PlayState
 from src.states.WildSelectionState import WildSelectionState
 from src.states.ApplyActionState import ApplyActionState
 from src.states.ApplyEventState import ApplyEventState
-from src.states.BetweenRoundState import BetweenRoundState
 from src.states.GameOverState import GameOverState
 from src.states.HighScoreState import HighScoreState
 from src.states.EnterHighScoreState import EnterHighScoreState

@@ -1,6 +1,6 @@
 from src.states.BaseState import BaseState
 from src.constants import *
-from src.Dependency import gFonts
+from src.Dependency import *
 import pygame, sys
 
 class StartState(BaseState):
@@ -49,14 +49,14 @@ class StartState(BaseState):
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    gSounds['select'].play()
                     if self.option==1:
                         self.option=2
                     else:
                         self.option=1
                     #self.menu_change_sound.play()
                 if event.key == pygame.K_RETURN:
-                    #self.confirm_sound.play()
-
+                    gSounds['enter'].play()
                     if self.option == 1:
                         self.state_machine.Change('dif_select', {
                             'high_scores': self.high_scores

@@ -1,6 +1,7 @@
 from src.states.BaseState import BaseState
 from src.constants import *
 import pygame,sys
+from src.Dependency import *
 
 class HighScoreState(BaseState):
     def __init__(self, state_manager):
@@ -24,16 +25,19 @@ class HighScoreState(BaseState):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    gSounds['exit'].play()
                     #self.return_to_main_sound.play()
                     self.state_machine.Change('start', {
                         'high_scores': self.high_scores
                     })
                 if event.key == pygame.K_LEFT:
+                    gSounds['select'].play()
                     if self.options == 1:
                         self.options = 3
                     else:
                         self.options -= 1
                 if event.key == pygame.K_RIGHT:
+                    gSounds['select'].play()
                     if self.options == 3:
                         self.options = 1
                     else:
