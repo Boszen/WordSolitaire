@@ -149,6 +149,7 @@ class ApplyActionState(BaseState):
         elif self.card_name == 'redraw':
             amount_to_draw = len(self.game.alphabet_active)
             self.game.clearAlphabet()
+            self.game.clearCell()
 
             for i in range(amount_to_draw):
                 random_alphabet = random.choice(self.game.alphabet_deck)

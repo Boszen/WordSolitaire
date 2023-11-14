@@ -54,7 +54,16 @@ class Game:
                 new_card.type = 'event'
             else:
                 new_card.type = 'action'
-            self.card_deck.append(new_card)
+            
+            if card in ['blind', 'say_that_word', 'alphabet_overload', 'vowel_draw', 'move', 'copy_it']:
+                self.card_deck.append(new_card)
+            elif card in ['x2_multiplier', 'x0.5_multiplier', 'x2_block', 'random_remove','random_draw','con_draw','wild_draw','redraw']:
+                for i in range(2):
+                    self.card_deck.append(new_card)
+            elif card in ['remove', 'block']:
+                for i in range(3):
+                    self.card_deck.append(new_card)
+
     
     def moveList(self,listFrom,listTo,item):
         for list in listFrom:
@@ -73,6 +82,10 @@ class Game:
             self.card_used.append(card)
         self.card_active = []
 
+    def clearCell(self):
+        for cell in self.board.cell:
+            if not cell.turn_locked:
+                cell.occupied = 0
     def syncAlphabetMatrix(self):
         for cell in self.board.cell: 
             self.alphabet_matrix[cell.num[0]][cell.num[1]] = cell.occupied

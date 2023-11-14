@@ -40,7 +40,7 @@ class DrawState(BaseState):
                 #self.game.alphabet_active.append(random_alphabet)
 
         random_card = random.choice(self.game.card_deck)
-        #random_card = Card('copy_it',card_image_list['copy_it'])
+        #random_card = Card('redraw',card_image_list['redraw'])
         #random_card.type = 'event'
         if random_card.type == 'event':
             self.state_machine.Change('event', {

@@ -27,7 +27,7 @@ card_image_list = {
     'move':pygame.image.load('./graphics/Cards/Action/MoveAlphabet.png'),
     'copy_it':pygame.image.load('./graphics/Cards/Action/CopyIt.png'),
     #'alphabet_overload':pygame.image.load('./graphics/Cards/Action/AlphabetOverload.png'),
-    'remove':pygame.image.load('./graphics/Cards/Action/RemoveTile.png'),
+    #'remove':pygame.image.load('./graphics/Cards/Action/RemoveTile.png'),
     #'say_that_word':pygame.image.load('./graphics/Cards/Action/SayThatWord.png'),
     #Event Cards
     'x2_multiplier':pygame.image.load('./graphics/Cards/Event/x2Multiplier.png'),
