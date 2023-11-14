@@ -10,7 +10,7 @@ class Board:
         self.y = 60
 
         self.cell = None
-        self.gap = 20
+        self.gap = 14
         self.Generate_Cell()
         
         #self.width ,self.height = image.get_size()

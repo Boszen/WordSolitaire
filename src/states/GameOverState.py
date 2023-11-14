@@ -1,11 +1,16 @@
 from src.states.BaseState import BaseState
-import pygame, sys
+from src.Game import Game
+from src.Card import Card
+from src.Alphabet import Alphabet
+from src.Board import Board
 from src.constants import *
+from src.Dependency import gFonts
+import pygame, sys, math
 
 class GameOverState(BaseState):
     def __init__(self, state_manager):
         super(GameOverState, self).__init__(state_manager)
-        #self.new_record_Sound = pygame.mixer.Sound('')#
+
         self.small_font = pygame.font.Font('./fonts/font.ttf', 32)
         self.medium_font = pygame.font.Font('./fonts/font.ttf', 64)
         self.large_font = pygame.font.Font('./fonts/font.ttf', 96)
@@ -14,13 +19,12 @@ class GameOverState(BaseState):
         pass
 
     def Enter(self, params):
-        self.score = params['score']
-        self.high_score = params['high_score']
-        self.game_over_message = params
-        self.main_menu_button_rect = pygame.Rect(200, 300, 200, 50)  # Define the button's position and size
-        self.main_menu_button_color = (0, 255, 0)  # Green
-        self.main_menu_font = pygame.font.Font(None, 36)
-        self.main_menu_text = self.main_menu_font.render("Main Menu", True, (0, 0, 0))
+        self.game = params['game']
+        self.score = self.game.score
+        self.difficulty = self.game.difficulty
+
+        self.current_score = self.game.high_score[self.difficulty]
+        print(self.current_score)
 
     def update(self, dt, events):
           for event in events:
@@ -33,21 +37,19 @@ class GameOverState(BaseState):
                     rank = 11
 
                     for i in range(9, -1, -1):
-                        score = self.high_scores[i]['score']
+                        score = self.current_score[i]['score']
                         if self.score > score: #break the record
                             rank = i
                             is_break_record = True
 
                     if is_break_record:
-                        self.new_record_sound.play()
-                        self.state_machine.Change("enter-high-score", {
-                            'high_scores': self.high_scores,
-                            'score': self.score,
+                        self.state_machine.Change("enter_high_score", {
+                            'game': self.game,
                             'score_index': rank
                         })
                     else:
                         self.state_machine.Change('start', {
-                            'high_scores': self.high_scores
+                            'high_scores': self.game.high_score
                         })
 
                 if event.key == pygame.K_ESCAPE:
@@ -56,7 +58,26 @@ class GameOverState(BaseState):
 
 
     def render(self, screen):
-        t_gameover = self.large_font.render("GAME OVER", False, (255, 255, 255))
+        t_game_over = gFonts['pixel_96'].render("Game Over", False, (0, 0, 0))
+        rect = t_game_over.get_rect(center=(WIDTH / 2 + 2, HEIGHT / 3 + 20 + 2))
+        screen.blit(t_game_over, rect)
+        t_game_over = gFonts['pixel_96'].render("Game Over", False, (255, 255, 255))
+        rect = t_game_over.get_rect(center=(WIDTH / 2, HEIGHT / 3 + 20))
+        screen.blit(t_game_over, rect)
+
+        t_score = gFonts['pixel_48'].render("Your Score:", False, (0, 0, 0))
+        rect = t_score.get_rect(center=(WIDTH / 2 - 150 + 2, HEIGHT / 2+ 20 + 2))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render("Your Score:", False, (255, 255, 255))
+        rect = t_score.get_rect(center=(WIDTH / 2 - 150, HEIGHT / 2 + 20))
+        screen.blit(t_score, rect)
+
+        t_score = gFonts['pixel_48'].render(f"{self.score}", False, (255, 255, 255))
+        rect = t_score.get_rect(center=(WIDTH / 2 + 150 , HEIGHT / 2 + 20 ))
+        screen.blit(t_score, rect)
+        
+
+        '''t_gameover = self.large_font.render("GAME OVER", False, (255, 255, 255))
         rect = t_gameover.get_rect(center=(WIDTH / 2, HEIGHT/3))
         screen.blit(t_gameover, rect)
 
@@ -74,4 +95,4 @@ class GameOverState(BaseState):
 
         #Render the "Main Menu" button
         pygame.draw.rect(screen, self.main_menu_button_color, self.main_menu_button_rect)
-        screen.blit(self.main_menu_text, (self.main_menu_button_rect.centerx - self.main_menu_text.get_width() / 2, self.main_menu_button_rect.centery - self.main_menu_text.get_height() / 4))
+        screen.blit(self.main_menu_text, (self.main_menu_button_rect.centerx - self.main_menu_text.get_width() / 2, self.main_menu_button_rect.centery - self.main_menu_text.get_height() / 4))'''

@@ -11,6 +11,8 @@ class ApplyEventState(BaseState):
     def __init__(self, state_manager):
         super(ApplyEventState, self).__init__(state_manager)
         self.dragging_obj = None
+        self.event_image = pygame.image.load(carpet_bg)
+        self.event_image_width ,self.event_image_height = self.event_image.get_size()
     
     def Exit(self):
         pass
@@ -23,20 +25,51 @@ class ApplyEventState(BaseState):
     def render(self, screen):
         self.game.render(screen)
 
+        # Round Text
         t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        rect = t_round.get_rect(center=(160 + 2,  HEIGHT / 5 - 50 + 2))
         screen.blit(t_round, rect)
         t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 - 50))
         screen.blit(t_round, rect)
-
         t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 ))
         screen.blit(t_round, rect)
 
-        t_event = gFonts['pixel_48'].render("Event", False, (0,0,0))
-        rect = t_event.get_rect(center=(WIDTH - 220, HEIGHT - 20 ))
+        # Score Text
+        t_score = gFonts['pixel_48'].render("Score", False, (0,0,0))
+        rect = t_score.get_rect(center=(160 + 2,  HEIGHT / 4 + 40 + 2))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render("Score", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 40))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 90))
+        screen.blit(t_score, rect)
+
+        # Last Word Text
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (0,0,0))
+        rect = t_word.get_rect(center=(160 + 2,  HEIGHT - 200 + 2))
+        screen.blit(t_word, rect)
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (255,255,255))
+        rect = t_word.get_rect(center=(160, HEIGHT - 200))
+        screen.blit(t_word, rect)
+        if self.game.formed_words != []:
+            t_word = gFonts['pixel_32'].render(f"{self.game.formed_words[-1]}", False, (255,255,255))
+            rect = t_word.get_rect(center=(160, HEIGHT - 150))
+            screen.blit(t_word, rect)
+
+        screen.blit(self.event_image, (WIDTH/2 - self.event_image_width/2, HEIGHT/2 - self.event_image_height/2))
+
+        t_event = gFonts['pixel_48'].render("Event Card is Drawn, Effect Activated!", False, (0,0,0))
+        rect = t_event.get_rect(center=(WIDTH /2 + 2, HEIGHT - 200 + 2))
         screen.blit(t_event, rect)
+
+        t_event = gFonts['pixel_48'].render("Event Card is Drawn, Effect Activated!", False, (255,255,255))
+        rect = t_event.get_rect(center=(WIDTH /2, HEIGHT - 200 ))
+        screen.blit(t_event, rect)
+
+        
 
         card_show = Card(self.card_name, card_image_list[self.card_name])
         card_show.image = pygame.transform.scale(card_show.image, (card_show.width *2, card_show.height*2 ))
@@ -50,7 +83,7 @@ class ApplyEventState(BaseState):
         if self.card_name_check == 'x2_multiplier':
             random_cell = random.choice(self.game.board.cell)
             random_cell.special = 'x2_tile'
-            random_cell.color = (150,255,150)
+            random_cell.color = (255, 41, 116)
             self.card_name_check = None
         elif self.card_name_check == 'x0.5_multiplier':
             random_cell = random.choice(self.game.board.cell)

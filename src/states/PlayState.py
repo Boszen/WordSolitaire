@@ -52,27 +52,39 @@ class PlayState(BaseState):
     def render(self, screen):
         self.game.render(screen)
 
-        '''t_round = gFonts['pixel_48'].render("Round", False, (0,0,0))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        # Round Text
+        t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
+        rect = t_round.get_rect(center=(160 + 2,  HEIGHT / 5 - 50 + 2))
         screen.blit(t_round, rect)
-        t_round = gFonts['pixel_48'].render("Round", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 - 50))
         screen.blit(t_round, rect)
-
         t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
-        screen.blit(t_round, rect)'''
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 ))
+        screen.blit(t_round, rect)
 
+        # Score Text
         t_score = gFonts['pixel_48'].render("Score", False, (0,0,0))
-        rect = t_score.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        rect = t_score.get_rect(center=(160 + 2,  HEIGHT / 4 + 40 + 2))
         screen.blit(t_score, rect)
         t_score = gFonts['pixel_48'].render("Score", False, (255,255,255))
-        rect = t_score.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 40))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 90))
         screen.blit(t_score, rect)
 
-        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
-        rect = t_score.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
-        screen.blit(t_score, rect)
+        # Last Word Text
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (0,0,0))
+        rect = t_word.get_rect(center=(160 + 2,  HEIGHT - 200 + 2))
+        screen.blit(t_word, rect)
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (255,255,255))
+        rect = t_word.get_rect(center=(160, HEIGHT - 200))
+        screen.blit(t_word, rect)
+        if self.game.formed_words != []:
+            t_word = gFonts['pixel_32'].render(f"{self.game.formed_words[-1]}", False, (255,255,255))
+            rect = t_word.get_rect(center=(160, HEIGHT - 150))
+            screen.blit(t_word, rect)
 
     def update(self, dt, events):
         for event in events:
@@ -162,7 +174,7 @@ class PlayState(BaseState):
 
                         self.game.syncAlphabetMatrix()
                         self.game.findWords()
-                        print(self.game.alphabet_matrix)
+                        #print(self.game.alphabet_matrix)
 
                         all_alphabets_docked = True
                         for alphabet in self.game.alphabet_active:
@@ -171,11 +183,17 @@ class PlayState(BaseState):
                                 break
 
                         if all_alphabets_docked:
+                            if self.game.round >= 15:
+                                self.state_machine.Change('game_over',{
+                                    'game': self.game
+                                })
+                                break
                             for alphabet in self.game.alphabet_active:
                                 alphabet.x_default = alphabet.x
                                 alphabet.y_default = alphabet.y
                                 self.game.alphabet_board.append(alphabet)
                             self.game.alphabet_active = []
+                            #print(self.game.high_score)
                             self.state_machine.Change('draw', {
                                 'game': self.game
                             })

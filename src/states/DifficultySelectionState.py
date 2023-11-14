@@ -1,6 +1,7 @@
 from src.states.BaseState import BaseState
+from src.Game import Game
 from src.constants import *
-import pygame,sys
+import pygame,sys, random
 
 
 class DifficultySelectionState(BaseState):
@@ -37,22 +38,32 @@ class DifficultySelectionState(BaseState):
                     else:
                         self.difficulty +=1
                 elif event.key == pygame.K_RETURN:
-                    # Start the game with the selected difficulty
+                    game = Game(self.difficulty, self.high_scores)
+                    starter_block_cell = []
                     if self.difficulty == 1:
-                        self.state_machine.Change("draw", {
-                            'high_scores': self.high_scores,
-                            'difficulty': self.difficulty
-                        })
+                        for i in range(2):
+                            starter_block_cell.append(random.choice(game.board.cell))
+                        for cell in starter_block_cell:
+                            cell.special = 'block_tile'
+                            cell.color = (150,150,150)
                     elif self.difficulty == 2:
-                        self.state_machine.Change("draw", {
-                            'high_scores': self.high_scores,
-                            'difficulty': self.difficulty
-                        })
+                        for i in range(4):
+                            starter_block_cell.append(random.choice(game.board.cell))
+                        for cell in starter_block_cell:
+                            cell.special = 'block_tile'
+                            cell.color = (150,150,150)
                     elif self.difficulty == 3:
-                        self.state_machine.Change("draw", {
-                            'high_scores': self.high_scores,
-                            'difficulty': self.difficulty
-                        })
+                        for i in range(8):
+                            starter_block_cell.append(random.choice(game.board.cell))
+                        for cell in starter_block_cell:
+                            cell.special = 'block_tile'
+                            cell.color = (150,150,150)
+
+                    for cell in game.board.cell:
+                        cell.update()
+                    self.state_machine.Change("draw", {
+                        'game': game
+                    })
 
     def render(self, screen):
         active_color = (103,255,255)

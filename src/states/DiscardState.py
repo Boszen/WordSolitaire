@@ -11,7 +11,7 @@ class DiscardState(BaseState):
     def __init__(self, state_manager):
         super(DiscardState, self).__init__(state_manager)
 
-        self.discard_image = pygame.image.load(discard_bg)
+        self.discard_image = pygame.image.load(carpet_bg)
         self.discard_image_width ,self.discard_image_height = self.discard_image.get_size()
         
     
@@ -38,11 +38,52 @@ class DiscardState(BaseState):
 
     def render(self, screen):
         self.game.render(screen)
+
+        # Round Text
+        t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
+        rect = t_round.get_rect(center=(160 + 2,  HEIGHT / 5 - 50 + 2))
+        screen.blit(t_round, rect)
+        t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 - 50))
+        screen.blit(t_round, rect)
+        t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 ))
+        screen.blit(t_round, rect)
+
+        # Score Text
+        t_score = gFonts['pixel_48'].render("Score", False, (0,0,0))
+        rect = t_score.get_rect(center=(160 + 2,  HEIGHT / 4 + 40 + 2))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render("Score", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 40))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 90))
+        screen.blit(t_score, rect)
+
+        # Last Word Text
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (0,0,0))
+        rect = t_word.get_rect(center=(160 + 2,  HEIGHT - 200 + 2))
+        screen.blit(t_word, rect)
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (255,255,255))
+        rect = t_word.get_rect(center=(160, HEIGHT - 200))
+        screen.blit(t_word, rect)
+        if self.game.formed_words != []:
+            t_word = gFonts['pixel_32'].render(f"{self.game.formed_words[-1]}", False, (255,255,255))
+            rect = t_word.get_rect(center=(160, HEIGHT - 150))
+            screen.blit(t_word, rect)
+
         screen.blit(self.discard_image, (WIDTH/2 - self.discard_image_width/2, HEIGHT/2 - self.discard_image_height/2))
+
+        t_discard = gFonts['pixel_48'].render(f"Your hand is full, Discard {self.number_to_discard} card", False, (0, 0, 0))
+        rect = t_discard.get_rect(center=(WIDTH / 2 +2, HEIGHT / 5 - 30 +2))
+        screen.blit(t_discard, rect)
 
         t_discard = gFonts['pixel_48'].render(f"Your hand is full, Discard {self.number_to_discard} card", False, (255, 255, 255))
         rect = t_discard.get_rect(center=(WIDTH / 2, HEIGHT / 5 - 30))
         screen.blit(t_discard, rect)
+
+        
         
         i = 0
         t_card_draw = ""

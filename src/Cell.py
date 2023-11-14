@@ -46,4 +46,4 @@ class Cell:
     def render(self, screen):
         pygame.draw.rect(screen, self.color, pygame.Rect(self.x,self.y,self.width,self.height))
         if self.special != None:
-            screen.blit(self.image, (self.x, self.y ))
+            screen.blit(self.image, (self.x + self.width/2 - 32, self.y + self.height/2 - 32 ))

@@ -7,7 +7,7 @@ from src.constants import *
 
 sprite_collection = SpriteManager().spriteCollection
 
-discard_bg = "./graphics/discardBg.png"
+carpet_bg = "./graphics/carpetBg.png"
 board_graphics = "./graphics/Board/Board.png"
 
 tile_image_list = {
@@ -26,16 +26,16 @@ card_image_list = {
     'redraw':pygame.image.load('./graphics/Cards/Action/RedrawCard.png'),
     'move':pygame.image.load('./graphics/Cards/Action/MoveAlphabet.png'),
     'copy_it':pygame.image.load('./graphics/Cards/Action/CopyIt.png'),
-    'alphabet_overload':pygame.image.load('./graphics/Cards/Action/AlphabetOverload.png'),
+    #'alphabet_overload':pygame.image.load('./graphics/Cards/Action/AlphabetOverload.png'),
     'remove':pygame.image.load('./graphics/Cards/Action/RemoveTile.png'),
-    'say_that_word':pygame.image.load('./graphics/Cards/Action/SayThatWord.png'),
+    #'say_that_word':pygame.image.load('./graphics/Cards/Action/SayThatWord.png'),
     #Event Cards
-    'x2_multiplier':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'x0.5_multiplier':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'block':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'x2_block':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'blind':pygame.image.load('./graphics/playingCards/card-back1.png'),
-    'random_remove':pygame.image.load('./graphics/playingCards/card-back1.png')
+    'x2_multiplier':pygame.image.load('./graphics/Cards/Event/x2Multiplier.png'),
+    'x0.5_multiplier':pygame.image.load('./graphics/Cards/Event/x0.5Multiplier.png'),
+    'block':pygame.image.load('./graphics/Cards/Event/Block.png'),
+    'x2_block':pygame.image.load('./graphics/Cards/Event/x2Block.png'),
+    #'blind':pygame.image.load('./graphics/Cards/Event/BlindCard.png'),
+    #'random_remove':pygame.image.load('./graphics/Cards/Event/RandomRemove.png')
 }
 
 alphabet_image_list = {
@@ -73,3 +73,4 @@ from src.states.ApplyEventState import ApplyEventState
 from src.states.BetweenRoundState import BetweenRoundState
 from src.states.GameOverState import GameOverState
 from src.states.HighScoreState import HighScoreState
+from src.states.EnterHighScoreState import EnterHighScoreState

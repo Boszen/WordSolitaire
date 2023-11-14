@@ -41,26 +41,51 @@ class ApplyActionState(BaseState):
     def render(self, screen):
         self.game.render(screen)
 
+        # Round Text
         t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        rect = t_round.get_rect(center=(160 + 2,  HEIGHT / 5 - 50 + 2))
         screen.blit(t_round, rect)
         t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 - 50))
+        screen.blit(t_round, rect)
+        t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
+        rect = t_round.get_rect(center=(160, HEIGHT / 5 ))
         screen.blit(t_round, rect)
 
-        t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
-        rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
-        screen.blit(t_round, rect)
+        # Score Text
+        t_score = gFonts['pixel_48'].render("Score", False, (0,0,0))
+        rect = t_score.get_rect(center=(160 + 2,  HEIGHT / 4 + 40 + 2))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render("Score", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 40))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
+        rect = t_score.get_rect(center=(160, HEIGHT / 4 + 90))
+        screen.blit(t_score, rect)
+
+        # Last Word Text
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (0,0,0))
+        rect = t_word.get_rect(center=(160 + 2,  HEIGHT - 200 + 2))
+        screen.blit(t_word, rect)
+        t_word = gFonts['pixel_32'].render("Latest Word", False, (255,255,255))
+        rect = t_word.get_rect(center=(160, HEIGHT - 200))
+        screen.blit(t_word, rect)
+        if self.game.formed_words != []:
+            t_word = gFonts['pixel_32'].render(f"{self.game.formed_words[-1]}", False, (255,255,255))
+            rect = t_word.get_rect(center=(160, HEIGHT - 150))
+            screen.blit(t_word, rect)
 
         if self.card_name == 'move':
-            t_move = gFonts['pixel_32'].render("Move", False, (255,255,255))
-            rect = t_move.get_rect(center=(WIDTH/2, HEIGHT - 50))
-            screen.blit(t_move, rect)
+            if self.game.alphabet_board != []:
+                t_move = gFonts['pixel_32'].render("Move 1 Alphabet", False, (255,255,255))
+                rect = t_move.get_rect(center=(WIDTH/2, HEIGHT - 50))
+                screen.blit(t_move, rect)
         
         if self.card_name == 'copy_it':
-            t_move = gFonts['pixel_32'].render("Copy", False, (255,255,255))
-            rect = t_move.get_rect(center=(WIDTH/2, HEIGHT - 50))
-            screen.blit(t_move, rect)
+            if self.game.alphabet_board != []:
+                t_copy = gFonts['pixel_32'].render("Copy 1 Alphabet on the board", False, (255,255,255))
+                rect = t_copy.get_rect(center=(WIDTH/2, HEIGHT - 50))
+                screen.blit(t_copy, rect)
 
     def update(self, dt, events):
         self.game.update(dt)
@@ -132,7 +157,12 @@ class ApplyActionState(BaseState):
             self.state_machine.Change('play',{
                     'game': self.game
             })
-        elif self.card_name == 'move':                            
+        elif self.card_name == 'move':  
+            if self.game.alphabet_board == []:
+                self.game.card_active.append(Card('move',card_image_list['move']))
+                self.state_machine.Change('play',{
+                    'game': self.game
+            })                        
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # Left mouse button
@@ -188,6 +218,7 @@ class ApplyActionState(BaseState):
                             self.dragging_obj = None
 
                             self.game.syncAlphabetMatrix()
+                            self.game.findWords()
 
                             if self.game.alphabet_matrix == self.previous_alphabet_matrix:
                                 pass
@@ -203,6 +234,11 @@ class ApplyActionState(BaseState):
                             alphabet.hover = False
                 
         elif self.card_name == 'copy_it':
+            if self.game.alphabet_board == []:
+                self.game.card_active.append(Card('copy_it',card_image_list['copy_it']))
+                self.state_machine.Change('play',{
+                    'game': self.game
+            })     
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # Left mouse button

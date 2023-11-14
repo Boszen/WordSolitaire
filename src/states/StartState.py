@@ -18,7 +18,7 @@ class StartState(BaseState):
     def render(self, screen):
         # title
         t_title = gFonts['pixel_96'].render("Word Solitaire", False, (255, 255, 255))
-        rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3))
+        rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 3 + 20))
         screen.blit(t_title, rect)
 
         t_start_color = (255, 255, 255)

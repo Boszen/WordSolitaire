@@ -6,7 +6,10 @@ from src.Board import Board
 from src.Dependency import *
 
 class Game:
-    def __init__(self):
+    def __init__(self,difficulty,high_score):
+        self.difficulty = difficulty - 1
+        self.high_score = high_score
+
         self.alphabet_deck = []
         self.alphabet_active = []
         self.alphabet_board = []
