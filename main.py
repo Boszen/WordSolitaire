@@ -20,7 +20,7 @@ class GameMain:
         self.scroll_bg = False
 
         self.bg_image = pygame.transform.scale(
-            pygame.image.load("./graphics/background.png"), (WIDTH+5, HEIGHT+5))
+            pygame.image.load("./graphics/Board/Wallpaper.png"), (WIDTH+5, HEIGHT+5))
 
         self.g_state_manager = StateMachine(self.screen)
         states = {
@@ -29,6 +29,7 @@ class GameMain:
             'draw': DrawState(self.g_state_manager),
             'discard': DiscardState(self.g_state_manager),
             'play': PlayState(self.g_state_manager),
+            'wild': WildSelectionState(self.g_state_manager),
             'action': ApplyActionState(self.g_state_manager),
             'event': ApplyEventState(self.g_state_manager),
             'between': BetweenRoundState(self.g_state_manager),

@@ -1,10 +1,11 @@
 import pygame
 from src.constants import *
+from src.Dependency import *
 from src.Cell import Cell
 
 class Board:
     def __init__(self):
-        #self.image = image
+        self.image = pygame.image.load(board_graphics)
         self.x = 280
         self.y = 60
 
@@ -28,6 +29,6 @@ class Board:
         for cell in self.cell:
             cell.update(dt)
     def render(self, screen):
-       #screen.blit(self.image, (self.x, self.y ))
-       for cell in self.cell:
-           cell.render(screen)
+        screen.blit(self.image, (self.x, self.y ))
+        for cell in self.cell:
+            cell.render(screen)

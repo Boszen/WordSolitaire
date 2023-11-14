@@ -52,16 +52,27 @@ class PlayState(BaseState):
     def render(self, screen):
         self.game.render(screen)
 
-        t_round = gFonts['pixel_48'].render(f"Round", False, (0,0,0))
+        '''t_round = gFonts['pixel_48'].render("Round", False, (0,0,0))
         rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
         screen.blit(t_round, rect)
-        t_round = gFonts['pixel_48'].render(f"Round", False, (255,255,255))
+        t_round = gFonts['pixel_48'].render("Round", False, (255,255,255))
         rect = t_round.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
         screen.blit(t_round, rect)
 
         t_round = gFonts['pixel_48'].render(f"{self.game.round}", False, (255,255,255))
         rect = t_round.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
-        screen.blit(t_round, rect)
+        screen.blit(t_round, rect)'''
+
+        t_score = gFonts['pixel_48'].render("Score", False, (0,0,0))
+        rect = t_score.get_rect(center=(WIDTH - 220, HEIGHT / 5 - 50))
+        screen.blit(t_score, rect)
+        t_score = gFonts['pixel_48'].render("Score", False, (255,255,255))
+        rect = t_score.get_rect(center=(WIDTH - 222.5, HEIGHT / 5 - 48.5))
+        screen.blit(t_score, rect)
+
+        t_score = gFonts['pixel_48'].render(f"{self.game.score}", False, (255,255,255))
+        rect = t_score.get_rect(center=(WIDTH - 220, HEIGHT / 4 - 30))
+        screen.blit(t_score, rect)
 
     def update(self, dt, events):
         for event in events:
@@ -85,6 +96,11 @@ class PlayState(BaseState):
 
                     for alphabet in reversed(self.game.alphabet_active):
                         if alphabet.mouseCollide(event.pos):
+                            if alphabet.name == 'wild_':
+                                    self.state_machine.Change('wild',{
+                                        'game': self.game,
+                                        'alphabet_tile': alphabet
+                                    })
                             #print(alphabet.sequence)
                             if not self.dragging_obj:
                                 # Only allow 1 instance dragging
@@ -146,23 +162,23 @@ class PlayState(BaseState):
 
                         self.game.syncAlphabetMatrix()
                         self.game.findWords()
-                        print(self.game.formed_words)
+                        print(self.game.alphabet_matrix)
 
-                    all_alphabets_docked = True
-                    for alphabet in self.game.alphabet_active:
-                        if not alphabet.docked:
-                            all_alphabets_docked = False
-                            break
-
-                    if all_alphabets_docked:
+                        all_alphabets_docked = True
                         for alphabet in self.game.alphabet_active:
-                            alphabet.x_default = alphabet.x
-                            alphabet.y_default = alphabet.y
-                            self.game.alphabet_board.append(alphabet)
-                        self.game.alphabet_active = []
-                        self.state_machine.Change('draw', {
-                            'game': self.game
-                        })
+                            if not alphabet.docked:
+                                all_alphabets_docked = False
+                                break
+
+                        if all_alphabets_docked:
+                            for alphabet in self.game.alphabet_active:
+                                alphabet.x_default = alphabet.x
+                                alphabet.y_default = alphabet.y
+                                self.game.alphabet_board.append(alphabet)
+                            self.game.alphabet_active = []
+                            self.state_machine.Change('draw', {
+                                'game': self.game
+                            })
 
             elif event.type == pygame.MOUSEMOTION:
                 for card in reversed(self.game.card_active):

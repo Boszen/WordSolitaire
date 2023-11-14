@@ -24,8 +24,8 @@ class DrawState(BaseState):
 
         if self.game.alphabet_active == []:
             for i in range(self.game.alphabet_draw_amount):
-                #random_alphabet = random.choice(self.game.alphabet_deck)
-                random_alphabet = Alphabet('a',alphabet_image_list['a'])
+                random_alphabet = random.choice(self.game.alphabet_deck)
+                #random_alphabet = Alphabet('wild_',alphabet_image_list['wild_'])
 
                 random_alphabet.sequence = i
                 self.row = math.floor(random_alphabet.sequence/3)
@@ -35,11 +35,11 @@ class DrawState(BaseState):
                 random_alphabet.x_default = random_alphabet.x
                 random_alphabet.y_default = random_alphabet.y
 
-                #self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)
-                self.game.alphabet_active.append(random_alphabet)
+                self.game.moveList(self.game.alphabet_deck, self.game.alphabet_active, random_alphabet)
+                #self.game.alphabet_active.append(random_alphabet)
 
-        #random_card = random.choice(self.game.card_deck)
-        random_card = Card('x2_block',card_image_list['x2_block'])
+        random_card = random.choice(self.game.card_deck)
+        #random_card = Card('x2_multiplier',card_image_list['x2_multiplier'])
         #random_card.type = 'event'
         if random_card.type == 'event':
             self.state_machine.Change('event', {
@@ -54,8 +54,8 @@ class DrawState(BaseState):
             random_card.y_default = random_card.y
 
             if len(self.game.card_active) < 3 :
-                #self.game.moveList(self.game.card_deck, self.game.card_active, random_card)
-                self.game.card_active.append(random_card)
+                self.game.moveList(self.game.card_deck, self.game.card_active, random_card)
+                #self.game.card_active.append(random_card)
                 self.state_machine.Change('play',{
                             'game': self.game
                 })

@@ -20,6 +20,7 @@ class Game:
         self.alphabet_draw_amount = 3
         self.card_draw_amount = 3
         self.round = 0
+        self.score = 0
         self.formed_words = []
         self.board = Board()
         
@@ -46,10 +47,10 @@ class Game:
     def Generate_Card(self):
         for card in card_image_list.keys():
             new_card = Card(card, card_image_list[card])
-            if card in ['wild_draw', 'random_draw', 'con_draw', 'vowel_draw', 'card_draw', 'redraw', 'draw', 'copy_it', 'alphabet_overload', 'say_that_word', 'remove']:
-                new_card.type = 'action'
-            else:
+            if card in ['x2_multiplier', 'x0.5_multiplier', 'block', 'x2_block', 'random_remove', 'blind']:
                 new_card.type = 'event'
+            else:
+                new_card.type = 'action'
             self.card_deck.append(new_card)
     
     def moveList(self,listFrom,listTo,item):
@@ -104,32 +105,27 @@ class Game:
                 for alphabet in self.alphabet_active:
                     if spec_cell.collide(alphabet):
                         alphabet.docked = False
+                        if spec_cell.special == 'x2_tile':
+                            self.score += ALPHABET_SCORE[alphabet.name]*2
+                        elif spec_cell.special == 'x0.5_tile':
+                            self.score += ALPHABET_SCORE[alphabet.name]*0.5
+                        else:
+                            self.score += ALPHABET_SCORE[alphabet.name]
                         self.moveList(self.alphabet_active, self.alphabet_used, alphabet)
 
                 for alphabet in self.alphabet_board:
                     if spec_cell.collide(alphabet):
                         alphabet.docked = False
+                        if spec_cell.special == 'x2_tile':
+                            self.score += ALPHABET_SCORE[alphabet.name]*2
+                        elif spec_cell.special == 'x0.5_tile':
+                            self.score += ALPHABET_SCORE[alphabet.name]*0.5
+                        else:
+                            self.score += ALPHABET_SCORE[alphabet.name]
                         self.moveList(self.alphabet_board, self.alphabet_used, alphabet)
 
                 for cell in spec_cell_list:
                     cell.reset()
-
-        '''for row_idx, row in enumerate(self.alphabet_matrix):
-            row_str = ''.join('')
-            for word in WORDS:
-                if word in row_str:
-                    col_idx = row_str.index(word)
-                    formed_words_and_indices[word] = [(row_idx, col_idx + i) for i in range(len(word))]
-
-        # Check vertically
-        for col_idx in range(len(self.alphabet_matrix[0])):
-            col_str = ''.join(str(self.alphabet_matrix[row][col_idx] for row in range(len(self.alphabet_matrix))))
-            for word in WORDS:
-                if word in col_str:
-                    row_idx = col_str.index(word)
-                    formed_words_and_indices[word] = [(row_idx + i, col_idx) for i in range(len(word))]
-
-        return formed_words_and_indices'''
 
     def update(self, dt):
         pass

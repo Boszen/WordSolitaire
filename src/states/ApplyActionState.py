@@ -65,7 +65,7 @@ class ApplyActionState(BaseState):
     def update(self, dt, events):
         self.game.update(dt)
         if self.card_name == 'wild_draw':
-            wild_alphabet = Alphabet('wild',alphabet_image_list['wild'])
+            wild_alphabet = Alphabet('wild_',alphabet_image_list['wild_'])
             wild_alphabet.sequence = len(self.game.alphabet_active)
             self.game.alphabet_active.append(wild_alphabet)
             self.state_machine.Change('play',{
